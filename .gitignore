@@ -198,3 +198,19 @@ gradle-app.setting
 *.hprof
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,intellij,java,gradle,git
+/.idea/compiler.xml
+/.idea/modules/application/fc3-admin-do-catalogo.application.iml
+/.idea/modules/application/fc3-admin-do-catalogo.application.main.iml
+/.idea/modules/application/fc3-admin-do-catalogo.application.test.iml
+/.idea/modules/domain/fc3-admin-do-catalogo.domain.iml
+/.idea/modules/domain/fc3-admin-do-catalogo.domain.main.iml
+/.idea/modules/domain/fc3-admin-do-catalogo.domain.test.iml
+/.idea/modules/fc3-admin-do-catalogo.iml
+/.idea/modules/infrastructure/fc3-admin-do-catalogo.infrastructure.iml
+/.idea/modules/infrastructure/fc3-admin-do-catalogo.infrastructure.main.iml
+/.idea/modules/infrastructure/fc3-admin-do-catalogo.infrastructure.test.iml
+/.idea/modules/fc3-admin-do-catalogo.main.iml
+/.idea/modules/fc3-admin-do-catalogo.test.iml
+/.idea/jarRepositories.xml
+/.idea/misc.xml
+/.idea/modules.xml
