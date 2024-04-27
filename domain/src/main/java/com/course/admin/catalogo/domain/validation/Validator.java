@@ -7,7 +7,7 @@ public abstract class Validator {
     }
     public abstract void validate();
 
-    private ValidationHandler getHandler() {
+    public ValidationHandler getHandler() {
         return handler;
     }
 }
