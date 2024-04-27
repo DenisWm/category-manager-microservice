@@ -1,5 +1,7 @@
 package com.course.admin.catalogo.domain.category;
 
+import com.course.admin.catalogo.domain.exceptions.DomainException;
+import com.course.admin.catalogo.domain.validation.handler.ThrowsValidationHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -32,9 +34,9 @@ public class CategoryTest {
         final var expectedIsActive = true;
         final var actualCategory = Category.newCategory(expectedName, expectedDescription, expectedIsActive);
         final var actualException =
-                assertThrows(DomainException.class, () -> actualCategory.validate());
+                assertThrows(DomainException.class, () -> actualCategory.validate(new ThrowsValidationHandler()));
         assertEquals(expectedErrorCount, actualException.getErrors().size());
-        assertEquals(expectedErrorMessage, actualException.getErrors().get(0));
+        assertEquals(expectedErrorMessage, actualException.getErrors().get(0).message());
 
     }
 }
