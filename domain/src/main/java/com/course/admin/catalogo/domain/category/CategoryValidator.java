@@ -4,9 +4,12 @@ import com.course.admin.catalogo.domain.validation.Error;
 import com.course.admin.catalogo.domain.validation.ValidationHandler;
 import com.course.admin.catalogo.domain.validation.Validator;
 
-import java.util.List;
-
 public class CategoryValidator extends Validator {
+    public static final int NAME_MAX_LENGTH = 255;
+    public static final int NAME_MIN_LENGTH = 3;
+    public static final String NAME_SHOULD_NOT_BE_NULL = "'name' should not be null";
+    public static final String NAME_SHOULD_NOT_BE_EMPTY = "'name' should not be empty";
+    public static final String NAME_MUST_BE_BETWEEN_3_AND_255_CHARACTERS = "'name' must be between 3 and 255 characters";
     private final Category category;
     private final ValidationHandler validationHandler;
     public CategoryValidator(final Category category, final ValidationHandler aHandler) {
@@ -24,8 +27,22 @@ public class CategoryValidator extends Validator {
 
     @Override
     public void validate() {
-        if(this.category.getName() == null) {
-            this.validationHandler.append(new Error("'name' should not be null"));
+        checkNameConstraints();
+    }
+
+    private void checkNameConstraints() {
+        final var name = this.category.getName();
+        if(name == null) {
+            this.validationHandler.append(new Error(NAME_SHOULD_NOT_BE_NULL));
+            return;
+        }
+        if(name.isBlank()) {
+            this.validationHandler.append(new Error(NAME_SHOULD_NOT_BE_EMPTY));
+            return;
+        }
+        final int nameLength = name.trim().length();
+        if(nameLength < NAME_MIN_LENGTH || nameLength > NAME_MAX_LENGTH) {
+            this.validationHandler.append(new Error(NAME_MUST_BE_BETWEEN_3_AND_255_CHARACTERS));
         }
     }
 }
