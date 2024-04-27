@@ -13,6 +13,7 @@ dependencies {
     implementation(project(":domain"))
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.mockito:mockito-junit-jupiter:4.5.1")
 }
 
 tasks.test {
