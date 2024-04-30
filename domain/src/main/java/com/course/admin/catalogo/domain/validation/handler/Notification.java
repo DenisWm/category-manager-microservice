@@ -19,6 +19,9 @@ public class Notification implements ValidationHandler {
     private Notification(final List<Error> errors) {
         this.errors = errors;
     }
+    public static Notification create(final Throwable t) {
+        return create(new Error(t.getMessage()));
+    }
     public static Notification create() {
         return new Notification(new ArrayList<>());
     }
