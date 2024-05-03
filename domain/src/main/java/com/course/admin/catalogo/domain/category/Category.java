@@ -19,7 +19,7 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
                     final String aName,
                     final String aDescription,
                     final boolean isActive,
-                    final Instant aCreationdAt,
+                    final Instant aCreationAt,
                     final Instant anUpdatedAt,
                     final Instant aDeletedAt
     )
@@ -28,7 +28,7 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
         this.name = aName;
         this.description = aDescription;
         this.active = isActive;
-        this.createdAt = aCreationdAt;
+        this.createdAt = aCreationAt;
         this.updatedAt = anUpdatedAt;
         this.deletedAt = aDeletedAt;
     }
