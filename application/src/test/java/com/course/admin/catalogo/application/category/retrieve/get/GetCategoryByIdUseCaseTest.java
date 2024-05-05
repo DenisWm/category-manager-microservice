@@ -1,4 +1,4 @@
-package com.course.admin.catalogo.application.category.retrieve;
+package com.course.admin.catalogo.application.category.retrieve.get;
 
 import com.course.admin.catalogo.domain.category.Category;
 import com.course.admin.catalogo.domain.category.CategoryGateway;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 public class GetCategoryByIdUseCaseTest {
 
     @InjectMocks
-    private DefaultGetCategoryByIdUseCaseTest useCase;
+    private DefaultGetCategoryByIdUseCase useCase;
     @Mock
     private CategoryGateway categoryGateway;
 
@@ -58,7 +58,7 @@ public class GetCategoryByIdUseCaseTest {
     @Test
     public void givenAnInvalidId_whenCallsGetCategory_shouldReturnNotFound() {
         final var expectedId = CategoryID.from("123");
-        final var expectedErrorMessage = "";
+        final var expectedErrorMessage = "Category with ID 123 was not found";
 
         when(categoryGateway.findById(eq(expectedId))).thenReturn(Optional.empty());
 
@@ -84,7 +84,7 @@ public class GetCategoryByIdUseCaseTest {
                 () -> useCase.execute(expectedId.getValue())
         );
 
-        assertEquals(expectedErrorMessage, actualException.getErrors().get(0).message());
+        assertEquals(expectedErrorMessage, actualException.getMessage());
     }
 
 }
