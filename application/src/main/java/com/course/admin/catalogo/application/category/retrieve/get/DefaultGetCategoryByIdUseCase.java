@@ -1,6 +1,5 @@
 package com.course.admin.catalogo.application.category.retrieve.get;
 
-import com.course.admin.catalogo.application.category.retrieve.CategoryOutput;
 import com.course.admin.catalogo.domain.category.CategoryGateway;
 import com.course.admin.catalogo.domain.category.CategoryID;
 import com.course.admin.catalogo.domain.exceptions.DomainException;
