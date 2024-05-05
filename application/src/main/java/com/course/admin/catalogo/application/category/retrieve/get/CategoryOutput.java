@@ -1,4 +1,4 @@
-package com.course.admin.catalogo.application.category.retrieve;
+package com.course.admin.catalogo.application.category.retrieve.get;
 
 import com.course.admin.catalogo.domain.category.Category;
 import com.course.admin.catalogo.domain.category.CategoryID;
