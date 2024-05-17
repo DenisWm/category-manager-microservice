@@ -4,7 +4,7 @@ import com.course.admin.catalogo.domain.AggregateRoot;
 import com.course.admin.catalogo.domain.validation.ValidationHandler;
 
 import java.time.Instant;
-import java.util.UUID;
+import java.util.Objects;
 
 public class Category extends AggregateRoot<CategoryID> implements Cloneable {
 
@@ -28,8 +28,8 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
         this.name = aName;
         this.description = aDescription;
         this.active = isActive;
-        this.createdAt = aCreationAt;
-        this.updatedAt = anUpdatedAt;
+        this.createdAt = Objects.requireNonNull(aCreationAt, "'createdAt' should not be null");
+        this.updatedAt = Objects.requireNonNull(anUpdatedAt, "'updatedAt' should not be null");
         this.deletedAt = aDeletedAt;
     }
     public static Category newCategory(final String aName, final String aDescription, final boolean isActive) {
