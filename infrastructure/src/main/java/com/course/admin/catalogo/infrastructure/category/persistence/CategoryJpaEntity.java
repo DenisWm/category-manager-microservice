@@ -3,14 +3,11 @@ package com.course.admin.catalogo.infrastructure.category.persistence;
 import com.course.admin.catalogo.domain.category.Category;
 import com.course.admin.catalogo.domain.category.CategoryID;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
 
 @Table(name = "category")
-@Embeddable
+@Entity
 public class CategoryJpaEntity {
 
     @Id
@@ -31,7 +28,7 @@ public class CategoryJpaEntity {
     @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME(6)")
     private Instant updatedAt;
 
-    @Column(name = "deleted_at", nullable = false, columnDefinition = "DATETIME(6)")
+    @Column(name = "deleted_at", columnDefinition = "DATETIME(6)")
     private Instant deletedAt;
 
     public CategoryJpaEntity() {
