@@ -20,27 +20,36 @@ public class CategoryMySQLGateway implements CategoryGateway {
     }
 
     @Override
-    public Category create(Category aCategory) {
-        return this.categoryRepository.save(CategoryJpaEntity.from(aCategory)).toAggregate();
+    public Category create(final Category aCategory) {
+        return save(aCategory);
     }
 
     @Override
     public void deleteById(CategoryID anId) {
+        final String anIdValue = anId.getValue();
+        if(categoryRepository.existsById(anIdValue)) {
+            categoryRepository.deleteById(anIdValue);
+        }
 
     }
 
     @Override
-    public Optional<Category> findById(CategoryID anId) {
-        return Optional.empty();
+    public Optional<Category> findById(final CategoryID anId) {
+        return categoryRepository.findById(anId.getValue())
+                .map(CategoryJpaEntity::toAggregate);
     }
 
     @Override
-    public Category update(Category aCategory) {
-        return null;
+    public Category update(final Category aCategory) {
+        return save(aCategory);
     }
 
     @Override
     public Pagination<Category> findAll(CategorySearchQuery aQuery) {
         return null;
+    }
+
+    private Category save(final Category aCategory) {
+        return this.categoryRepository.save(CategoryJpaEntity.from(aCategory)).toAggregate();
     }
 }
