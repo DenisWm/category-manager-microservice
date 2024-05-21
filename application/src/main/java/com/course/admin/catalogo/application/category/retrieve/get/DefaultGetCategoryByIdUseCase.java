@@ -15,16 +15,16 @@ public class DefaultGetCategoryByIdUseCase extends GetCategoryByIdUseCase {
         this.categoryGateway = Objects.requireNonNull(categoryGateway);
     }
 
-    private static Supplier<DomainException> notFound(CategoryID aCategoryId) {
-        return () -> DomainException.with(
-                new Error("Category with ID %s was not found".formatted(aCategoryId.getValue())));
-    }
-
     @Override
     public CategoryOutput execute(String anId) {
         final var aCategoryId = CategoryID.from(anId);
         return this.categoryGateway.findById(aCategoryId)
                 .map(CategoryOutput::from)
                 .orElseThrow(notFound(aCategoryId));
+    }
+
+    private static Supplier<DomainException> notFound(CategoryID aCategoryId) {
+        return () -> DomainException.with(
+                new Error("Category with ID %s was not found".formatted(aCategoryId.getValue())));
     }
 }
