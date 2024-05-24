@@ -29,8 +29,11 @@ dependencies {
     implementation project(':domain')
     implementation project(':application')
 
+    implementation('mysql:mysql-connector-java')
 
-    implementation ('mysql:mysql-connector-java')
+    implementation('org.springdoc:springdoc-openapi-webmvc-core:1.6.8')
+    implementation('org.springdoc:springdoc-openapi-ui:1.6.8')
+
     implementation ('org.springframework.boot:spring-boot-starter-web') {
         exclude module: 'spring-boot-starter-tomcat'
     }
