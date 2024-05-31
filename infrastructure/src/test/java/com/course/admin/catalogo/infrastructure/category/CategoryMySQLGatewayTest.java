@@ -17,10 +17,9 @@ public class CategoryMySQLGatewayTest {
 
     @Autowired
     private CategoryMySQLGateway categoryGateway;
+
     @Autowired
     private CategoryRepository categoryRepository;
-    @Autowired
-    private CategoryMySQLGateway categoryMySQLGateway;
 
     @Test
     public void givenAValidCategory_whenCallsCreate_shouldReturnANewCategory() {
@@ -118,7 +117,7 @@ public class CategoryMySQLGatewayTest {
 
         Assertions.assertEquals(1, categoryRepository.count());
 
-        categoryMySQLGateway.deleteById(aCategory.getId());
+        categoryGateway.deleteById(aCategory.getId());
 
         Assertions.assertEquals(0, categoryRepository.count());
     }
@@ -165,7 +164,7 @@ public class CategoryMySQLGatewayTest {
     public void givenInvalidCategoryId_whenTryToDeleteIt_shouldDeleteCategory () {
         Assertions.assertEquals(0, categoryRepository.count());
 
-        categoryMySQLGateway.deleteById(CategoryID.from("invalid"));
+        categoryGateway.deleteById(CategoryID.from("invalid"));
 
         Assertions.assertEquals(0, categoryRepository.count());
     }
