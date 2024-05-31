@@ -4,14 +4,15 @@ import com.course.admin.catalogo.domain.category.Category;
 import com.course.admin.catalogo.domain.category.CategoryGateway;
 import com.course.admin.catalogo.domain.category.CategoryID;
 import com.course.admin.catalogo.domain.exceptions.DomainException;
-import com.course.admin.catalogo.domain.validation.Error;
+import com.course.admin.catalogo.domain.exceptions.NotFoundException;
 import com.course.admin.catalogo.domain.validation.handler.Notification;
 import io.vavr.control.Either;
 
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import static io.vavr.API.*;
+import static io.vavr.API.Left;
+import static io.vavr.API.Try;
 
 public class DefaultUpdateCategoryUseCase extends UpdateCategoryUseCase{
 
@@ -44,6 +45,6 @@ public class DefaultUpdateCategoryUseCase extends UpdateCategoryUseCase{
     }
 
     private static Supplier<DomainException> notFound(final CategoryID anId) {
-        return () -> DomainException.with(new Error("Category with ID %s was not found".formatted(anId.getValue())));
+        return () -> NotFoundException.with(Category.class, anId);
     }
 }
