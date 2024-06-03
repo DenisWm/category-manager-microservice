@@ -46,6 +46,7 @@ public class CreateCategoryUseCaseIT {
         final var actualCategory = categoryRepository.findById(actualOutput.id()).get();
 
         assertEquals(expectedName, actualCategory.getName());
+        assertEquals(expectedDescription, actualCategory.getDescription());
         assertEquals(expectedIsActive, actualCategory.isActive());
         assertNotNull(actualCategory.getCreatedAt());
         assertNotNull(actualCategory.getUpdatedAt());

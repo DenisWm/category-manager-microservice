@@ -3,7 +3,10 @@ package com.course.admin.catalogo.infrastructure.category.persistence;
 import com.course.admin.catalogo.domain.category.Category;
 import com.course.admin.catalogo.domain.category.CategoryID;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.Instant;
 
 @Table(name = "category")

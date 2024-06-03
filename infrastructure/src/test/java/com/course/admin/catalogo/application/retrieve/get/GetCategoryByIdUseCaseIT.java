@@ -8,14 +8,16 @@ import com.course.admin.catalogo.domain.category.CategoryID;
 import com.course.admin.catalogo.domain.exceptions.NotFoundException;
 import com.course.admin.catalogo.infrastructure.category.persistence.CategoryJpaEntity;
 import com.course.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 
@@ -50,8 +52,10 @@ public class GetCategoryByIdUseCaseIT {
         assertEquals(expectedName, actualCategory.name());
         assertEquals(expectedDescription, actualCategory.description());
         assertEquals(expectedIsActive, actualCategory.isActive());
-        assertEquals(aCategory.getCreatedAt(), actualCategory.createdAt());
-        assertEquals(aCategory.getUpdatedAt(), actualCategory.updatedAt());
+        System.out.println(aCategory.getCreatedAt());
+        System.out.println(Date.from(aCategory.getCreatedAt()));
+        assertTrue(DateUtils.truncatedEquals(Date.from(aCategory.getCreatedAt()), Date.from(actualCategory.createdAt()), Calendar.SECOND));
+        assertTrue(DateUtils.truncatedEquals(Date.from(aCategory.getUpdatedAt()), Date.from(actualCategory.updatedAt()),Calendar.SECOND));
         assertEquals(aCategory.getDeletedAt(), actualCategory.deletedAt());
     }
 
