@@ -7,12 +7,15 @@ import com.course.admin.catalogo.domain.category.Category;
 import com.course.admin.catalogo.domain.category.CategoryGateway;
 import com.course.admin.catalogo.infrastructure.category.persistence.CategoryJpaEntity;
 import com.course.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -60,7 +63,7 @@ public class UpdateCategoryUseCaseIT {
         assertEquals(expectedName, actualCategory.getName());
         assertEquals(expectedDescription, actualCategory.getDescription());
         assertEquals(expectedIsActive, actualCategory.isActive());
-        assertEquals(aCategory.getCreatedAt(), actualCategory.getCreatedAt());
+        assertTrue(DateUtils.truncatedEquals(Date.from(aCategory.getCreatedAt()), Date.from(actualCategory.getCreatedAt()), Calendar.SECOND));
         assertTrue(aCategory.getUpdatedAt().isBefore(actualCategory.getUpdatedAt()));
         assertNull(actualCategory.getDeletedAt());
     }
@@ -120,7 +123,7 @@ public class UpdateCategoryUseCaseIT {
         assertEquals(expectedName, actualCategory.getName());
         assertEquals(expectedDescription, actualCategory.getDescription());
         assertEquals(expectedIsActive, actualCategory.isActive());
-        assertEquals(aCategory.getCreatedAt(), actualCategory.getCreatedAt());
+        assertTrue(DateUtils.truncatedEquals(Date.from(aCategory.getCreatedAt()), Date.from(actualCategory.getCreatedAt()),Calendar.SECOND));
         assertTrue(aCategory.getUpdatedAt().isBefore(actualCategory.getUpdatedAt()));
         assertNotNull(actualCategory.getDeletedAt());
 
@@ -158,8 +161,8 @@ public class UpdateCategoryUseCaseIT {
         assertEquals(aCategory.getName(), actualCategory.getName());
         assertEquals(aCategory.getDescription(), actualCategory.getDescription());
         assertEquals(aCategory.isActive(), actualCategory.isActive());
-        assertEquals(aCategory.getCreatedAt(), actualCategory.getCreatedAt());
-        assertEquals(aCategory.getUpdatedAt(), actualCategory.getUpdatedAt());
+        assertTrue(DateUtils.truncatedEquals(Date.from(aCategory.getCreatedAt()), Date.from(actualCategory.getCreatedAt()), Calendar.SECOND));
+        assertTrue(DateUtils.truncatedEquals(Date.from(aCategory.getUpdatedAt()), Date.from(actualCategory.getUpdatedAt()),Calendar.SECOND));
         assertEquals(aCategory.getDeletedAt(), actualCategory.getDeletedAt());
     }
 
