@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiError.from(e));
     }
 
-    record ApiError(String message, List<Error> errors) {
+    public record ApiError(String message, List<Error> errors) {
         static ApiError from(DomainException ex) {
             return new ApiError(ex.getMessage(), ex.getErrors());
         }
