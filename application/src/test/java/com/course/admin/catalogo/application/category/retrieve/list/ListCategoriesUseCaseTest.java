@@ -2,7 +2,7 @@ package com.course.admin.catalogo.application.category.retrieve.list;
 
 import com.course.admin.catalogo.domain.category.Category;
 import com.course.admin.catalogo.domain.category.CategoryGateway;
-import com.course.admin.catalogo.domain.category.CategorySearchQuery;
+import com.course.admin.catalogo.domain.pagination.SearchQuery;
 import com.course.admin.catalogo.domain.pagination.Pagination;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,7 +54,7 @@ public class ListCategoriesUseCaseTest {
         final var expectedSort = "createdAt";
         final var expectedDirection = "asc";
 
-        final var aSearchQuery = new CategorySearchQuery(
+        final var aSearchQuery = new SearchQuery(
                 expectedPage,
                 expectedPerPage,
                 expectedTerms,
@@ -90,7 +90,7 @@ public class ListCategoriesUseCaseTest {
         final var expectedSort = "createdAt";
         final var expectedDirection = "asc";
 
-        final var aSearchQuery = new CategorySearchQuery(
+        final var aSearchQuery = new SearchQuery(
                 expectedPage,
                 expectedPerPage,
                 expectedTerms,
@@ -124,7 +124,7 @@ public class ListCategoriesUseCaseTest {
         final var expectedDirection = "asc";
         final var expectedErrorMessage = "Gateway error";
 
-        final var aSearchQuery = new CategorySearchQuery(
+        final var aSearchQuery = new SearchQuery(
                 expectedPage,
                 expectedPerPage,
                 expectedTerms,

@@ -9,7 +9,7 @@ import com.course.admin.catalogo.application.category.retrieve.list.ListCategori
 import com.course.admin.catalogo.application.category.update.UpdateCategoryCommand;
 import com.course.admin.catalogo.application.category.update.UpdateCategoryOutput;
 import com.course.admin.catalogo.application.category.update.UpdateCategoryUseCase;
-import com.course.admin.catalogo.domain.category.CategorySearchQuery;
+import com.course.admin.catalogo.domain.pagination.SearchQuery;
 import com.course.admin.catalogo.domain.pagination.Pagination;
 import com.course.admin.catalogo.domain.validation.handler.Notification;
 import com.course.admin.catalogo.infrastructure.api.CategoryAPI;
@@ -72,7 +72,7 @@ public class CategoryController implements CategoryAPI {
             final String sort,
             final String direction) {
 
-        final var aQuery = new CategorySearchQuery(page, perPage, search, sort, direction);
+        final var aQuery = new SearchQuery(page, perPage, search, sort, direction);
         return listCategoriesUseCase.execute(aQuery).map(CategoryApiPresenter::present);
     }
 

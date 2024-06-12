@@ -1,6 +1,6 @@
-package com.course.admin.catalogo.domain.category;
+package com.course.admin.catalogo.domain.pagination;
 
-public record CategorySearchQuery(
+public record SearchQuery(
         int page,
         int perPage,
         String terms,
