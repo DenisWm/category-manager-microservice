@@ -6,7 +6,7 @@ public interface ValidationHandler {
 
     ValidationHandler append(Error anError);
     ValidationHandler append(ValidationHandler aHandler);
-    ValidationHandler validate(Validation aValidation);
+    <T> T validate(Validation<T> aValidation);
     default boolean hasErrors() {
         return getErrors() != null && !getErrors().isEmpty();
     }
@@ -20,7 +20,7 @@ public interface ValidationHandler {
     }
 
     List<Error> getErrors();
-    interface Validation{
-        void validate();
+    interface Validation<T>{
+        T validate();
     }
 }
