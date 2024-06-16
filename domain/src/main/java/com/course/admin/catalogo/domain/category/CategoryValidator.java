@@ -14,14 +14,11 @@ public class CategoryValidator extends Validator {
     public CategoryValidator(final Category category, final ValidationHandler aHandler) {
         super(aHandler);
         this.category = category;
-
     }
-
 
     private Category getCategory() {
         return category;
     }
-
 
     @Override
     public void validate() {
