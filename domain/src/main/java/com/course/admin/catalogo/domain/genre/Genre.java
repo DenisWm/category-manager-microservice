@@ -6,6 +6,7 @@ import com.course.admin.catalogo.domain.category.CategoryID;
 import com.course.admin.catalogo.domain.exceptions.NotificationException;
 import com.course.admin.catalogo.domain.genre.GenreID;
 import com.course.admin.catalogo.domain.category.CategoryValidator;
+import com.course.admin.catalogo.domain.utils.InstantUtils;
 import com.course.admin.catalogo.domain.validation.ValidationHandler;
 import com.course.admin.catalogo.domain.validation.handler.Notification;
 
@@ -97,14 +98,14 @@ public class Genre extends AggregateRoot<GenreID> {
         }
         this.name = aName;
         this.categories = new ArrayList<>(categories != null ? categories : Collections.emptyList());
-        this.updatedAt = Instant.now();
+        this.updatedAt = InstantUtils.now();
 
         selfValidate();
 
         return this;
     }
     public Genre deactivate() {
-        Instant now = Instant.now();
+        Instant now = InstantUtils.now();
         if (getDeletedAt() == null) {
             this.deletedAt = now;
         }
@@ -116,7 +117,7 @@ public class Genre extends AggregateRoot<GenreID> {
     public Genre activate() {
         this.deletedAt = null;
         this.active = true;
-        this.updatedAt = Instant.now();
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 
@@ -178,7 +179,7 @@ public class Genre extends AggregateRoot<GenreID> {
             return this;
         }
         this.categories.add(aCategoryID);
-        this.updatedAt = Instant.now();
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 
@@ -187,7 +188,7 @@ public class Genre extends AggregateRoot<GenreID> {
             return this;
         }
         this.categories.addAll(categories);
-        this.updatedAt = Instant.now();
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 
@@ -196,7 +197,7 @@ public class Genre extends AggregateRoot<GenreID> {
             return this;
         }
         this.categories.remove(aCategoryID);
-        this.updatedAt = Instant.now();
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 }
