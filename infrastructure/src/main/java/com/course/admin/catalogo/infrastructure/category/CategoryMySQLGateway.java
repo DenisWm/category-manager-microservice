@@ -10,6 +10,7 @@ import com.course.admin.catalogo.infrastructure.category.persistence.CategoryRep
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -19,7 +20,7 @@ import java.util.Optional;
 
 import static com.course.admin.catalogo.infrastructure.utils.SpecificationUtils.like;
 
-@Service
+@Component
 public class CategoryMySQLGateway implements CategoryGateway {
 
     private final CategoryRepository categoryRepository;

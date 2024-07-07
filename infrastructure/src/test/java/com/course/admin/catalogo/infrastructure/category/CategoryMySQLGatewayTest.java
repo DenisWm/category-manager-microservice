@@ -8,9 +8,13 @@ import com.course.admin.catalogo.infrastructure.category.persistence.CategoryJpa
 import com.course.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @MySQLGatewayTest
 public class CategoryMySQLGatewayTest {
