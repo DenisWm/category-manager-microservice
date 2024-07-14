@@ -1,4 +1,4 @@
-package com.course.admin.catalogo.application.retrieve.get;
+package com.course.admin.catalogo.application.category.retrieve.get;
 
 import com.course.admin.catalogo.IntegrationTest;
 import com.course.admin.catalogo.application.category.retrieve.get.GetCategoryByIdUseCase;

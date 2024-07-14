@@ -1,4 +1,4 @@
-package com.course.admin.catalogo.application.update;
+package com.course.admin.catalogo.application.category.update;
 
 import com.course.admin.catalogo.IntegrationTest;
 import com.course.admin.catalogo.application.category.update.UpdateCategoryCommand;

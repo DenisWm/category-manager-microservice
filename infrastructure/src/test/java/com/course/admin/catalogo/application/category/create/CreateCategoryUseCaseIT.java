@@ -1,4 +1,4 @@
-package com.course.admin.catalogo.application.create;
+package com.course.admin.catalogo.application.category.create;
 
 import com.course.admin.catalogo.IntegrationTest;
 import com.course.admin.catalogo.application.category.create.CreateCategoryCommand;

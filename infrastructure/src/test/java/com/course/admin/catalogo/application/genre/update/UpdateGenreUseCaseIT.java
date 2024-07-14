@@ -1,14 +1,17 @@
 package com.course.admin.catalogo.application.genre.update;
 
-import com.course.admin.catalogo.application.UseCaseTest;
+import com.course.admin.catalogo.IntegrationTest;
+import com.course.admin.catalogo.domain.category.Category;
 import com.course.admin.catalogo.domain.category.CategoryGateway;
 import com.course.admin.catalogo.domain.category.CategoryID;
 import com.course.admin.catalogo.domain.exceptions.NotificationException;
 import com.course.admin.catalogo.domain.genre.Genre;
 import com.course.admin.catalogo.domain.genre.GenreGateway;
+import com.course.admin.catalogo.infrastructure.genre.persistence.GenreRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Objects;
@@ -16,25 +19,29 @@ import java.util.Optional;
 
 import static com.course.admin.catalogo.application.utils.IDUtils.asString;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
-public class UpdateGenreUseCaseTest extends UseCaseTest {
-    @Mock
+@IntegrationTest
+public class UpdateGenreUseCaseIT {
+
+    @Autowired
     private GenreGateway genreGateway;
-    @Mock
+    @Autowired
     private CategoryGateway categoryGateway;
-    @InjectMocks
-    private DefaultUpdateGenreUseCase useCase;
+    @Autowired
+    private UpdateGenreUseCase useCase;
+    @Autowired
+    private GenreRepository genreRepository;
 
-    @Override
-    protected List<Object> getMocks() {
-        return List.of(categoryGateway, genreGateway);
-    }
     @Test
     public void givenAValidCommand_whenCallsUpdateGenre_shouldReturnGenreId() {
-        final var aGenre = Genre.newGenre("acao", true);
+        final var aGenre = genreGateway.create(Genre.newGenre("acao", true));
         final var expectedId = aGenre.getId();
 
         final var expectedName = "Ação";
@@ -43,37 +50,40 @@ public class UpdateGenreUseCaseTest extends UseCaseTest {
 
         final var aCommand = UpdateGenreCommand.with(expectedId.getValue(), expectedName, expectedIsActive, asString(expectedCategories));
 
-        when(genreGateway.findById(any())).thenReturn(Optional.of(Genre.with(aGenre)));
-        when(genreGateway.update(any())).thenAnswer(returnsFirstArg());
 
         final var actualOutput = useCase.execute(aCommand);
 
         assertNotNull(actualOutput);
         assertEquals(expectedId.getValue(), actualOutput.id());
 
-        verify(categoryGateway, times(0)).existsByIds(any());
-        verify(genreGateway, times(1)).findById(eq(expectedId));
-        verify(genreGateway, times(1)).update(argThat(aUpdatedGenre ->
-                Objects.equals(expectedId, aUpdatedGenre.getId())
-                && Objects.equals(expectedName, aUpdatedGenre.getName())
-                && Objects.equals(expectedIsActive, aUpdatedGenre.isActive())
-                && Objects.equals(expectedCategories, aUpdatedGenre.getCategories())
-                && Objects.equals(aGenre.getCreatedAt(), aUpdatedGenre.getCreatedAt())
-                && aGenre.getUpdatedAt().isBefore(aUpdatedGenre.getUpdatedAt())
-                && Objects.isNull(aUpdatedGenre.getDeletedAt())
-        ));
+        final var actualGenre = genreRepository.findById(expectedId.getValue()).get();
+
+        assertEquals(expectedName, actualGenre.getName());
+        assertEquals(expectedIsActive, actualGenre.isActive());
+        assertTrue(
+                expectedCategories.size() == actualGenre.getCategoryIDs().size()
+                        && expectedCategories.containsAll(actualGenre.getCategoryIDs())
+        );
+        assertNotNull(actualGenre.getCreatedAt());
+        assertNotNull(actualGenre.getUpdatedAt());
+        assertNull(actualGenre.getDeletedAt());
     }
 
     @Test
     public void givenAValidCommandWithCategories_whenCallsUpdateGenre_shouldReturnGenreId() {
-        final var aGenre = Genre.newGenre("acao", true);
+        final var filmes = categoryGateway.create(Category.newCategory("Filmes", null, true));
+
+        final var series = categoryGateway.create(Category.newCategory("Series", null, true));
+
+        final var aGenre = genreGateway.create(Genre.newGenre("acao", true).addCategories(List.of(filmes.getId(), series.getId())));
+
         final var expectedId = aGenre.getId();
 
         final var expectedName = "Ação";
         final var expectedIsActive = true;
         final var expectedCategories = List.<CategoryID>of(
-                CategoryID.from("123"),
-                CategoryID.from("456 ")
+                filmes.getId(),
+                series.getId()
         );
 
         final var aCommand =
@@ -83,31 +93,28 @@ public class UpdateGenreUseCaseTest extends UseCaseTest {
                         expectedIsActive,
                         asString(expectedCategories));
 
-        when(categoryGateway.existsByIds(any())).thenReturn(expectedCategories);
-        when(genreGateway.findById(any())).thenReturn(Optional.of(Genre.with(aGenre)));
-        when(genreGateway.update(any())).thenAnswer(returnsFirstArg());
-
         final var actualOutput = useCase.execute(aCommand);
 
         assertNotNull(actualOutput);
         assertEquals(expectedId.getValue(), actualOutput.id());
 
-        verify(categoryGateway, times(1)).existsByIds(eq(expectedCategories));
-        verify(genreGateway, times(1)).findById(eq(expectedId));
-        verify(genreGateway, times(1)).update(argThat(aUpdatedGenre ->
-                Objects.equals(expectedId, aUpdatedGenre.getId())
-                        && Objects.equals(expectedName, aUpdatedGenre.getName())
-                        && Objects.equals(expectedIsActive, aUpdatedGenre.isActive())
-                        && Objects.equals(expectedCategories, aUpdatedGenre.getCategories())
-                        && Objects.equals(aGenre.getCreatedAt(), aUpdatedGenre.getCreatedAt())
-                        && aGenre.getUpdatedAt().isBefore(aUpdatedGenre.getUpdatedAt())
-                        && Objects.isNull(aUpdatedGenre.getDeletedAt())
-        ));
+        final var actualGenre = genreRepository.findById(expectedId.getValue()).get();
+
+        assertEquals(expectedName, actualGenre.getName());
+        assertEquals(expectedIsActive, actualGenre.isActive());
+        assertTrue(
+                expectedCategories.size() == actualGenre.getCategoryIDs().size()
+                        && expectedCategories.containsAll(actualGenre.getCategoryIDs())
+        );
+        assertNotNull(actualGenre.getCreatedAt());
+        assertNotNull(actualGenre.getUpdatedAt());
+        assertNull(actualGenre.getDeletedAt());
     }
 
     @Test
     public void givenAValidCommandWithInactiveGenre_whenCallsUpdateGenre_shouldReturnGenreId() {
-        final var aGenre = Genre.newGenre("acao", true);
+        final var aGenre = genreGateway.create(Genre.newGenre("acao", true));
+
         final var expectedId = aGenre.getId();
 
         final var expectedName = "Ação";
@@ -115,9 +122,6 @@ public class UpdateGenreUseCaseTest extends UseCaseTest {
         final var expectedCategories = List.<CategoryID>of();
 
         final var aCommand = UpdateGenreCommand.with(expectedId.getValue(), expectedName, expectedIsActive, asString(expectedCategories));
-
-        when(genreGateway.findById(any())).thenReturn(Optional.of(Genre.with(aGenre)));
-        when(genreGateway.update(any())).thenAnswer(returnsFirstArg());
 
         assertNull(aGenre.getDeletedAt());
         assertTrue(aGenre.isActive());
@@ -127,21 +131,22 @@ public class UpdateGenreUseCaseTest extends UseCaseTest {
         assertNotNull(actualOutput);
         assertEquals(expectedId.getValue(), actualOutput.id());
 
-        verify(categoryGateway, times(0)).existsByIds(any());
-        verify(genreGateway, times(1)).findById(eq(expectedId));
-        verify(genreGateway, times(1)).update(argThat(aUpdatedGenre ->
-                Objects.equals(expectedId, aUpdatedGenre.getId())
-                        && Objects.equals(expectedName, aUpdatedGenre.getName())
-                        && Objects.equals(expectedIsActive, aUpdatedGenre.isActive())
-                        && Objects.equals(expectedCategories, aUpdatedGenre.getCategories())
-                        && Objects.equals(aGenre.getCreatedAt(), aUpdatedGenre.getCreatedAt())
-                        && aGenre.getUpdatedAt().isBefore(aUpdatedGenre.getUpdatedAt())
-                        && Objects.nonNull(aUpdatedGenre.getDeletedAt())
-        ));
+        final var actualGenre = genreRepository.findById(expectedId.getValue()).get();
+
+        assertEquals(expectedName, actualGenre.getName());
+        assertEquals(expectedIsActive, actualGenre.isActive());
+        assertTrue(
+                expectedCategories.size() == actualGenre.getCategoryIDs().size()
+                        && expectedCategories.containsAll(actualGenre.getCategoryIDs())
+        );
+        assertNotNull(actualGenre.getCreatedAt());
+        assertNotNull(actualGenre.getUpdatedAt());
+        assertNotNull(actualGenre.getDeletedAt());
     }
     @Test
     public void givenAnInvalidName_whenCallsUpdateGenre_shouldReturnNotificationException() {
-        final var aGenre = Genre.newGenre("acao", true);
+        final var aGenre = genreGateway.create(Genre.newGenre("acao", true));
+
         final var expectedId = aGenre.getId();
 
         final String expectedName = null;
@@ -158,7 +163,6 @@ public class UpdateGenreUseCaseTest extends UseCaseTest {
                         expectedIsActive,
                         asString(expectedCategories));
 
-        when(genreGateway.findById(any())).thenReturn(Optional.of(Genre.with(aGenre)));
 
         final var actualException = assertThrows(NotificationException.class, () -> useCase.execute(aCommand));
 
@@ -166,24 +170,23 @@ public class UpdateGenreUseCaseTest extends UseCaseTest {
         assertEquals(expectedErrorMessage, actualException.getErrors().get(0).message());
         assertEquals(expectedErrorCount, actualException.getErrors().size());
 
-        verify(genreGateway, times(1)).findById(eq(expectedId));
-        verify(categoryGateway, times(0)).existsByIds(any());
-        verify(genreGateway, times(0)).update(any());
     }
     @Test
     public void givenAnInvalidName_whenCallsUpdateGenreAndSomeCategoriesDoesNotExists_shouldReturnNotificationException() {
-        final var series = CategoryID.from("123");
-        final var filmes = CategoryID.from("456");
-        final var documentarios = CategoryID.from("789");
-        final var aGenre = Genre.newGenre("acao", true);
+        final var filmes = categoryGateway.create(Category.newCategory("Filmes", null, true));
+
+        final var series = categoryGateway.create(Category.newCategory("Series", null, true));
+
+
+        final var aGenre = genreGateway.create(Genre.newGenre("acao", true));
         final var expectedId = aGenre.getId();
 
         final String expectedName = null;
         final var expectedIsActive = true;
         final var expectedCategories = List.<CategoryID>of(
-                series, filmes, documentarios
+                series.getId(), filmes.getId(), CategoryID.from("456")
         );
-        final var expectedErrorMessageOne = "Some categories could not be found: 456, 789";
+        final var expectedErrorMessageOne = "Some categories could not be found: 456";
         final var expectedErrorMessageTwo = "'name' should not be null";
         final var expectedErrorCount = 2;
 
@@ -194,9 +197,6 @@ public class UpdateGenreUseCaseTest extends UseCaseTest {
                         expectedIsActive,
                         asString(expectedCategories));
 
-        when(genreGateway.findById(any())).thenReturn(Optional.of(Genre.with(aGenre)));
-        when(categoryGateway.existsByIds(any())).thenReturn(List.of(series));
-
         final var actualException = assertThrows(NotificationException.class, () -> useCase.execute(aCommand));
 
         assertNotNull(actualException);
@@ -204,8 +204,5 @@ public class UpdateGenreUseCaseTest extends UseCaseTest {
         assertEquals(expectedErrorMessageTwo, actualException.getErrors().get(1).message());
         assertEquals(expectedErrorCount, actualException.getErrors().size());
 
-        verify(genreGateway, times(1)).findById(eq(expectedId));
-        verify(categoryGateway, times(1)).existsByIds(eq(expectedCategories));
-        verify(genreGateway, times(0)).update(any());
     }
 }

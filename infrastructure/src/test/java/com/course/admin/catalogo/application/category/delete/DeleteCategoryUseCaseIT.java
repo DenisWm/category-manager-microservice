@@ -1,4 +1,4 @@
-package com.course.admin.catalogo.application.delete;
+package com.course.admin.catalogo.application.category.delete;
 
 import com.course.admin.catalogo.IntegrationTest;
 import com.course.admin.catalogo.application.category.delete.DeleteCategoryUseCase;
