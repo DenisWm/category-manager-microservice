@@ -1,9 +1,7 @@
 package com.course.admin.catalogo.e2e.category;
 
 import com.course.admin.catalogo.E2ETest;
-import com.course.admin.catalogo.domain.category.CategoryID;
-import com.course.admin.catalogo.infrastructure.category.models.CategoryResponse;
-import com.course.admin.catalogo.infrastructure.category.models.CreateCategoryRequest;
+import com.course.admin.catalogo.e2e.MockDsl;
 import com.course.admin.catalogo.infrastructure.category.models.UpdateCategoryRequest;
 import com.course.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
 import com.course.admin.catalogo.infrastructure.configuration.Json;
@@ -14,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -22,14 +19,15 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @E2ETest
 @Testcontainers
-public class CategoryE2ETest {
+public class CategoryE2ETest implements MockDsl {
 
     @Container
     private static final MySQLContainer MYSQL_CONTAINER = new MySQLContainer("mysql:latest")
@@ -60,7 +58,7 @@ public class CategoryE2ETest {
 
         assertEquals(1, categoryRepository.count());
 
-        final var actualCategory = retrieveCategory(actualId.getValue());
+        final var actualCategory = retrieveCategory(actualId);
 
         assertEquals(expectedName, actualCategory.name());
         assertEquals(expectedDescription, actualCategory.description());
@@ -87,13 +85,7 @@ public class CategoryE2ETest {
 
         final var requestBody = new UpdateCategoryRequest(expectedName, expectedDescription, expectedIsActive);
 
-        final var aMockMvcRequestBuilder = put("/categories/{id}", actualId.getValue())
-                .content(Json.writeValueAsString(requestBody))
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON);
-
-        this.mvc.perform(aMockMvcRequestBuilder)
-                .andDo(print()).andExpect(status().isOk())
+        updateCategory(actualId, requestBody)
                 .andExpect(jsonPath("$.id", equalTo(actualId.getValue())));
 
         final var actualCategory = categoryRepository.findById(actualId.getValue()).get();
@@ -156,13 +148,7 @@ public class CategoryE2ETest {
 
         final var requestBody = new UpdateCategoryRequest(expectedName, expectedDescription, expectedIsActive);
 
-        final var aMockMvcRequestBuilder = put("/categories/{id}", actualId.getValue())
-                .content(Json.writeValueAsString(requestBody))
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON);
-
-        this.mvc.perform(aMockMvcRequestBuilder)
-                .andDo(print()).andExpect(status().isOk())
+        updateCategory(actualId, requestBody)
                 .andExpect(jsonPath("$.id", equalTo(actualId.getValue())));
 
         final var actualCategory = categoryRepository.findById(actualId.getValue()).get();
@@ -217,7 +203,7 @@ public class CategoryE2ETest {
     }
 
     @Test
-    public void asACategoryAdminIShouldBeAbleToNavigateToAllCategories() throws Exception {
+    public void asACatalogAdminIShouldBeAbleToNavigateToAllCategories() throws Exception {
         Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
 
         assertEquals(0, categoryRepository.count());
@@ -259,7 +245,7 @@ public class CategoryE2ETest {
     }
 
     @Test
-    public void asACategoryAdminIShouldBeAbleToSearchBetweenAllCategories() throws Exception {
+    public void asACatalogAdminIShouldBeAbleToSearchBetweenAllCategories() throws Exception {
         Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
 
         assertEquals(0, categoryRepository.count());
@@ -278,7 +264,7 @@ public class CategoryE2ETest {
     }
 
     @Test
-    public void asACategoryAdminIShouldBeAbleToSortAllCategoriesByDescriptionDesc() throws Exception {
+    public void asACatalogAdminIShouldBeAbleToSortAllCategoriesByDescriptionDesc() throws Exception {
         Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
 
         assertEquals(0, categoryRepository.count());
@@ -300,72 +286,6 @@ public class CategoryE2ETest {
 
     }
 
-    private ResultActions listCategories(final int page, final int perPage, final String search) throws Exception {
-        return listCategories(search, page, perPage, "", "");
-    }
-
-    private ResultActions listCategories(final int page, final int perPage) throws Exception {
-        return listCategories("", page, perPage, "", "");
-    }
-
-    private ResultActions listCategories(
-            final String search,
-            final int page,
-            final int perPage,
-            final String sort,
-            final String direction
-    ) throws Exception {
-
-        final var aMockMvcRequestBuilder = get("/categories")
-                .queryParam("search", search)
-                .queryParam("page", String.valueOf(page))
-                .queryParam("perPage", String.valueOf(perPage))
-                .queryParam("sort", sort)
-                .queryParam("dir", direction)
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON);
-
-        final var response = this.mvc.perform(aMockMvcRequestBuilder)
-                .andDo(print());
-
-
-        return response;
-    }
-
-    private CategoryResponse retrieveCategory(String anId) throws Exception {
-
-        final var aMockMvcRequestBuilder = get("/categories/{id}", anId)
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON);
-
-        final var response = this.mvc.perform(aMockMvcRequestBuilder)
-                .andDo(print());
-
-        final var jsonContent = response.andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        return Json.readValue(jsonContent, CategoryResponse.class);
-    }
-
-    private CategoryID givenACategory(final String aName, final String aDescription, final boolean isActive) throws Exception {
-        final var aRequestBody = new CreateCategoryRequest(aName, aDescription, isActive);
-
-        final var aMockMvcRequestBuilder = post("/categories")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Json.writeValueAsString(aRequestBody));
-
-        final var response = this.mvc.perform(aMockMvcRequestBuilder)
-                .andDo(print());
-
-        final var actualId = response.andExpect(status().isCreated())
-                .andReturn()
-                .getResponse().getHeader("Location")
-                .replace("/categories/", "");
-
-        return CategoryID.from(actualId);
-    }
-
     @Test
     public void asACatalogAdminIShouldBeAbleToDeleteACategoryByItsIdentifier() throws Exception {
         Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
@@ -376,14 +296,14 @@ public class CategoryE2ETest {
 
         assertEquals(1, categoryRepository.count());
 
-        final var aMockMvcRequestBuilder = delete("/categories/{id}", actualId.getValue())
-                .contentType(MediaType.APPLICATION_JSON);
-
-        this.mvc.perform(aMockMvcRequestBuilder)
-                .andDo(print()).andExpect(status().isNoContent());
+        deleteACategory(actualId).andExpect(status().isNoContent());
 
         assertFalse(this.categoryRepository.existsById(actualId.getValue()));
     }
 
+    @Override
+    public MockMvc mvc() {
+        return this.mvc;
+    }
 
 }
