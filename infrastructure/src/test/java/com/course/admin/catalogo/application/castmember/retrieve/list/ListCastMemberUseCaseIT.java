@@ -1,59 +1,55 @@
 package com.course.admin.catalogo.application.castmember.retrieve.list;
 
-import com.course.admin.catalogo.application.Fixture;
-import com.course.admin.catalogo.application.UseCaseTest;
+import com.course.admin.catalogo.Fixture;
+import com.course.admin.catalogo.IntegrationTest;
 import com.course.admin.catalogo.domain.castmember.CastMember;
 import com.course.admin.catalogo.domain.castmember.CastMemberGateway;
 import com.course.admin.catalogo.domain.pagination.Pagination;
 import com.course.admin.catalogo.domain.pagination.SearchQuery;
+import com.course.admin.catalogo.infrastructure.castmember.persistence.CastMemberJpaEntity;
+import com.course.admin.catalogo.infrastructure.castmember.persistence.CastMemberRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-public class ListCastMemberUseCase extends UseCaseTest {
+@IntegrationTest
+public class ListCastMemberUseCaseIT {
 
-    @InjectMocks
-    private DefaultListCastMemberUseCase useCase;
+    @Autowired
+    private ListCastMemberUseCase useCase;
 
-    @Mock
+    @SpyBean
     private CastMemberGateway castMemberGateway;
 
-    @Override
-    protected List<Object> getMocks() {
-        return List.of(castMemberGateway);
-    }
+    @Autowired
+    private CastMemberRepository castMemberRepository;
+
     @Test
     public void givenAValidQuery_whenListCastMembers_shouldReturnAll() {
         final var members = List.of(
                 CastMember.newMember(Fixture.name(), Fixture.CastMember.type()),
                 CastMember.newMember(Fixture.name(), Fixture.CastMember.type())
         );
+
+        this.castMemberRepository.saveAllAndFlush(members.stream().map(CastMemberJpaEntity::from).toList());
+
+        assertEquals(2, castMemberRepository.count());
+
         final var expectedPage = 0;
         final var expectedPerPage = 10;
-        final var expectedTerms = "Algo";
+        final var expectedTerms = "";
         final var expectedSort = "createdAt";
         final var expectedDirection = "asc";
         final var expectedTotal = 2;
 
        final var expectedItems = members.stream().map(CastMemberListOutput::from).toList();
-
-       final var expectedPagination = new Pagination<>(
-               expectedPage,
-               expectedPerPage,
-               expectedTotal,
-               members
-       );
-
-       when(castMemberGateway.findAll(any())).thenReturn(expectedPagination);
 
        final var aQuery = new SearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
@@ -62,7 +58,10 @@ public class ListCastMemberUseCase extends UseCaseTest {
        assertEquals(expectedPage, actualOutput.currentPage());
        assertEquals(expectedPerPage, actualOutput.perPage());
        assertEquals(expectedTotal, actualOutput.total());
-       assertEquals(expectedItems, actualOutput.items());
+       assertTrue(
+               expectedItems.size() == actualOutput.items().size()
+               && expectedItems.containsAll(actualOutput.items())
+       );
 
        verify(castMemberGateway).findAll(eq(aQuery));
     }
@@ -86,8 +85,6 @@ public class ListCastMemberUseCase extends UseCaseTest {
                 expectedMembers
         );
 
-        when(castMemberGateway.findAll(any())).thenReturn(expectedPagination);
-
         final var aQuery = new SearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
         final var actualOutput = useCase.execute(aQuery);
@@ -109,8 +106,7 @@ public class ListCastMemberUseCase extends UseCaseTest {
         final var expectedDirection = "asc";
         final var expectedErrorMessage = "Gateway Error";
 
-
-        when(castMemberGateway.findAll(any())).thenThrow(new IllegalStateException(expectedErrorMessage));
+        doThrow(new IllegalStateException(expectedErrorMessage)).when(castMemberGateway).findAll(any());
 
         final var aQuery = new SearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
