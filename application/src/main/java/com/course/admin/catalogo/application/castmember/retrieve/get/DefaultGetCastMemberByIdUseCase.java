@@ -9,7 +9,7 @@ import java.util.Optional;
 
 import static com.course.admin.catalogo.application.utils.IDNotFoundUtils.notFound;
 
-public final class DefaultGetCastMemberByIdUseCase extends GetCastMemberByIdUseCase {
+public non-sealed class DefaultGetCastMemberByIdUseCase extends GetCastMemberByIdUseCase {
 
     private final CastMemberGateway castMemberGateway;
 

@@ -6,7 +6,7 @@ import com.course.admin.catalogo.domain.pagination.SearchQuery;
 
 import java.util.Objects;
 
-public final class DefaultListCastMemberUseCase extends ListCastMemberUseCase {
+public non-sealed class DefaultListCastMemberUseCase extends ListCastMemberUseCase {
 
     private final CastMemberGateway castMemberGateway;
 

@@ -13,7 +13,7 @@ import java.util.Objects;
 
 import static com.course.admin.catalogo.application.utils.IDNotFoundUtils.notFound;
 
-public final class DefaultUpdateCastMemberUseCase extends UpdateCastMemberUseCase {
+public non-sealed class DefaultUpdateCastMemberUseCase extends UpdateCastMemberUseCase {
 
     private final CastMemberGateway castMemberGateway;
 
