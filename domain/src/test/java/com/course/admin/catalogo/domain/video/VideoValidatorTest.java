@@ -48,9 +48,7 @@ public class VideoValidatorTest {
                 expectedMembers
         );
 
-        final var validator = new VideoValidator(actualVideo, new ThrowsValidationHandler());
-
-        final var actualError = assertThrows(DomainException.class, () -> validator.validate());
+        final var actualError = assertThrows(DomainException.class, () -> actualVideo.validate(new ThrowsValidationHandler()));
 
         assertEquals(expectedErrorCount, actualError.getErrors().size());
         assertEquals(expectedErrorMessage, actualError.getErrors().get(0).message());
@@ -89,9 +87,7 @@ public class VideoValidatorTest {
                 expectedMembers
         );
 
-        final var validator = new VideoValidator(actualVideo, new ThrowsValidationHandler());
-
-        final var actualError = assertThrows(DomainException.class, () -> validator.validate());
+        final var actualError = assertThrows(DomainException.class, () -> actualVideo.validate(new ThrowsValidationHandler()));
 
         assertEquals(expectedErrorCount, actualError.getErrors().size());
         assertEquals(expectedErrorMessage, actualError.getErrors().get(0).message());
@@ -135,9 +131,7 @@ public class VideoValidatorTest {
                 expectedMembers
         );
 
-        final var validator = new VideoValidator(actualVideo, new ThrowsValidationHandler());
-
-        final var actualError = assertThrows(DomainException.class, () -> validator.validate());
+        final var actualError = assertThrows(DomainException.class, () -> actualVideo.validate(new ThrowsValidationHandler()));
 
         assertEquals(expectedErrorCount, actualError.getErrors().size());
         assertEquals(expectedErrorMessage, actualError.getErrors().get(0).message());
@@ -171,9 +165,7 @@ public class VideoValidatorTest {
                 expectedMembers
         );
 
-        final var validator = new VideoValidator(actualVideo, new ThrowsValidationHandler());
-
-        final var actualError = assertThrows(DomainException.class, () -> validator.validate());
+        final var actualError = assertThrows(DomainException.class, () -> actualVideo.validate(new ThrowsValidationHandler()));
 
         assertEquals(expectedErrorCount, actualError.getErrors().size());
         assertEquals(expectedErrorMessage, actualError.getErrors().get(0).message());
@@ -227,9 +219,7 @@ public class VideoValidatorTest {
                 expectedMembers
         );
 
-        final var validator = new VideoValidator(actualVideo, new ThrowsValidationHandler());
-
-        final var actualError = assertThrows(DomainException.class, () -> validator.validate());
+        final var actualError = assertThrows(DomainException.class, () -> actualVideo.validate(new ThrowsValidationHandler()));
 
         assertEquals(expectedErrorCount, actualError.getErrors().size());
         assertEquals(expectedErrorMessage, actualError.getErrors().get(0).message());
@@ -268,9 +258,7 @@ public class VideoValidatorTest {
                 expectedMembers
         );
 
-        final var validator = new VideoValidator(actualVideo, new ThrowsValidationHandler());
-
-        final var actualError = assertThrows(DomainException.class, () -> validator.validate());
+        final var actualError = assertThrows(DomainException.class, () -> actualVideo.validate(new ThrowsValidationHandler()));
 
         assertEquals(expectedErrorCount, actualError.getErrors().size());
         assertEquals(expectedErrorMessage, actualError.getErrors().get(0).message());
@@ -309,9 +297,7 @@ public class VideoValidatorTest {
                 expectedMembers
         );
 
-        final var validator = new VideoValidator(actualVideo, new ThrowsValidationHandler());
-
-        final var actualError = assertThrows(DomainException.class, () -> validator.validate());
+        final var actualError = assertThrows(DomainException.class, () -> actualVideo.validate(new ThrowsValidationHandler()));
 
         assertEquals(expectedErrorCount, actualError.getErrors().size());
         assertEquals(expectedErrorMessage, actualError.getErrors().get(0).message());

@@ -1,10 +1,14 @@
-package com.course.admin.catalogo.application.genre.retrieve.list;
+package com.course.admin.catalogo.application.video.retrieve.list;
 
+import com.course.admin.catalogo.application.Fixture;
 import com.course.admin.catalogo.application.UseCaseTest;
+import com.course.admin.catalogo.application.genre.retrieve.list.GenreListOutput;
 import com.course.admin.catalogo.domain.genre.Genre;
-import com.course.admin.catalogo.domain.genre.GenreGateway;
 import com.course.admin.catalogo.domain.pagination.Pagination;
 import com.course.admin.catalogo.domain.pagination.SearchQuery;
+import com.course.admin.catalogo.domain.video.Video;
+import com.course.admin.catalogo.domain.video.VideoGateway;
+import com.course.admin.catalogo.domain.video.VideoSearchQuery;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -14,24 +18,27 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-public class ListGenreUseCaseTest extends UseCaseTest {
+public class DefaultListVideoUseCaseTest extends UseCaseTest {
 
     @InjectMocks
-    private DefaultListGenreUseCase useCase;
+    private DefaultListVideoUseCase useCase;
+
     @Mock
-    private GenreGateway genreGateway;
+    private VideoGateway videoGateway;
+
     @Override
     protected List<Object> getMocks() {
-        return List.of(genreGateway);
+        return List.of(videoGateway);
     }
 
     @Test
-    public void givenAnValidQuery_whenCallsListGenre_shouldReturnGenres() {
-        final var genres = List.of(
-                Genre.newGenre("Ação", true),
-                Genre.newGenre("Aventura", true)
+    public void givenAValidQuery_whenCallsListVideos_shouldReturnVideos() throws Exception {
+        final var videos = List.of(
+                Fixture.video(),
+                Fixture.video()
         );
 
         final var expectedPage = 0;
@@ -40,18 +47,19 @@ public class ListGenreUseCaseTest extends UseCaseTest {
         final var expectedSort = "createdAt";
         final var expectedDirection = "asc";
         final var expectedTotal = 2;
-        final var expectedItems = genres.stream().map(GenreListOutput::from).toList();
+        final var expectedItems = videos.stream().map(VideoListOutput::from).toList();
 
         final var expectedPagination = new Pagination<>(
                 expectedPage,
                 expectedPerPage,
                 expectedTotal,
-                genres
+                videos
         );
 
-        when(genreGateway.findAll(any())).thenReturn(expectedPagination);
+        when(videoGateway.findAll(any())).thenReturn(expectedPagination);
+
         final var aQuery =
-                new SearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
+                new VideoSearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
         final var actualOutput = useCase.execute(aQuery);
 
@@ -60,12 +68,12 @@ public class ListGenreUseCaseTest extends UseCaseTest {
         assertEquals(expectedTotal, actualOutput.total());
         assertEquals(expectedItems, actualOutput.items());
 
-        verify(genreGateway, times(1)).findAll(eq(aQuery));
+        verify(videoGateway, times(1)).findAll(eq(aQuery));
     }
 
     @Test
-    public void givenAnValidQuery_whenCallsListGenreAndResultIsEmpty_shouldReturnGenres() {
-        final var genres = List.<Genre>of(
+    public void givenAnValidQuery_whenCallsListVideosAndResultIsEmpty_shouldReturnGenres() {
+        final var videos = List.<Video>of(
         );
 
         final var expectedPage = 0;
@@ -75,19 +83,19 @@ public class ListGenreUseCaseTest extends UseCaseTest {
         final var expectedDirection = "asc";
         final var expectedTotal = 0;
 
-        final var expectedItems =  List.<GenreListOutput>of(
+        final var expectedItems =  List.<VideoListOutput>of(
         );
 
         final var expectedPagination = new Pagination<>(
                 expectedPage,
                 expectedPerPage,
                 expectedTotal,
-                genres
+                videos
         );
 
-        when(genreGateway.findAll(any())).thenReturn(expectedPagination);
+        when(videoGateway.findAll(any())).thenReturn(expectedPagination);
         final var aQuery =
-                new SearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
+                new VideoSearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
         final var actualOutput = useCase.execute(aQuery);
 
@@ -96,11 +104,11 @@ public class ListGenreUseCaseTest extends UseCaseTest {
         assertEquals(expectedTotal, actualOutput.currentPage());
         assertEquals(expectedItems, actualOutput.items());
 
-        verify(genreGateway, times(1)).findAll(eq(aQuery));
+        verify(videoGateway, times(1)).findAll(eq(aQuery));
     }
 
     @Test
-    public void givenAnValidQuery_whenCallsListGenreAndGatewayThrowsRandom_shouldThrowsException() {
+    public void givenAnValidQuery_whenCallsListVideoAndGatewayThrowsRandom_shouldThrowsException() {
 
         final var expectedPage = 0;
         final var expectedPerPage = 10;
@@ -109,15 +117,15 @@ public class ListGenreUseCaseTest extends UseCaseTest {
         final var expectedDirection = "asc";
         final var expectedErrorMessage = "Gateway error";
 
-        doThrow(new IllegalStateException(expectedErrorMessage)).when(genreGateway).findAll(any());
+        doThrow(new IllegalStateException(expectedErrorMessage)).when(videoGateway).findAll(any());
 
         final var aQuery =
-                new SearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
+                new VideoSearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
         final var actualException = assertThrows(IllegalStateException.class, () -> useCase.execute(aQuery));
 
         assertEquals(expectedErrorMessage, actualException.getMessage());
 
-        verify(genreGateway, times(1)).findAll(eq(aQuery));
+        verify(videoGateway, times(1)).findAll(eq(aQuery));
     }
 }

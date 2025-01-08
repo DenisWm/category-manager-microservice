@@ -1,7 +1,6 @@
 package com.course.admin.catalogo.application.castmember.delete;
 
 import com.course.admin.catalogo.application.Fixture;
-import com.course.admin.catalogo.application.UseCase;
 import com.course.admin.catalogo.application.UseCaseTest;
 import com.course.admin.catalogo.domain.castmember.CastMember;
 import com.course.admin.catalogo.domain.castmember.CastMemberGateway;
@@ -34,7 +33,7 @@ public class DeleteCastMemberUseCaseTest extends UseCaseTest {
 
     @Test
     public void givenValidIdentifier_whenCallsDeleteMember_shouldDeleteIt() throws Exception {
-        final var castMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var castMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
         final var expectedId = castMember.getId();
 
         doNothing().when(castMemberGateway).deleteById(any());
@@ -55,7 +54,7 @@ public class DeleteCastMemberUseCaseTest extends UseCaseTest {
 
     @Test
     public void givenValidIdentifier_whenCallsDeleteMemberAndGatewayThrowsException_shouldReceiveException() throws Exception {
-        final var castMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var castMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
         final var expectedId = castMember.getId();
         doThrow(new IllegalStateException("Gateway error")).when(castMemberGateway).deleteById(any());

@@ -67,9 +67,9 @@ public interface CastMemberAPI {
     void delete(@PathVariable String id);
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "List all cast members")
+    @Operation(summary = "List all cast castMembers")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cast members retrieved"),
+            @ApiResponse(responseCode = "200", description = "Cast castMembers retrieved"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
     Pagination<CastMemberListResponse> list(
