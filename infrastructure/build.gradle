@@ -30,7 +30,6 @@ dependencies {
     implementation project(':application')
 
     implementation('mysql:mysql-connector-java')
-
     implementation('org.springdoc:springdoc-openapi-webmvc-core:1.6.8')
     implementation('org.springdoc:springdoc-openapi-ui:1.6.8')
 
@@ -44,6 +43,8 @@ dependencies {
 
     implementation 'io.vavr:vavr:0.10.4'
 
+
+    testImplementation(project(path: ':domain', configuration: 'testClasses'))
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.flywaydb:flyway-core'
 

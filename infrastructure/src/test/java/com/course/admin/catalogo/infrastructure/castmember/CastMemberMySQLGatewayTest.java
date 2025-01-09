@@ -1,7 +1,7 @@
 package com.course.admin.catalogo.infrastructure.castmember;
 
-import com.course.admin.catalogo.Fixture;
 import com.course.admin.catalogo.MySQLGatewayTest;
+import com.course.admin.catalogo.domain.Fixture;
 import com.course.admin.catalogo.domain.castmember.CastMember;
 import com.course.admin.catalogo.domain.castmember.CastMemberID;
 import com.course.admin.catalogo.domain.castmember.CastMemberType;
@@ -15,8 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.course.admin.catalogo.Fixture.*;
-import static com.course.admin.catalogo.Fixture.CastMember.type;
+import static com.course.admin.catalogo.domain.Fixture.CastMembers.type;
+import static com.course.admin.catalogo.domain.Fixture.name;
 import static org.junit.jupiter.api.Assertions.*;
 
 @MySQLGatewayTest

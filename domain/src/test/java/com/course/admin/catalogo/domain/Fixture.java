@@ -1,4 +1,4 @@
-package com.course.admin.catalogo.application;
+package com.course.admin.catalogo.domain;
 
 import com.course.admin.catalogo.domain.castmember.CastMember;
 import com.course.admin.catalogo.domain.castmember.CastMemberType;
@@ -8,12 +8,10 @@ import com.course.admin.catalogo.domain.video.Rating;
 import com.course.admin.catalogo.domain.video.Resource;
 import com.course.admin.catalogo.domain.video.Video;
 import com.github.javafaker.Faker;
+import io.vavr.API;
 
 import java.time.Year;
-import java.util.Arrays;
 import java.util.Set;
-
-import static io.vavr.API.*;
 
 public final class Fixture {
     
@@ -124,9 +122,9 @@ public final class Fixture {
         }
 
         public static Resource resource(final Resource.Type type) {
-            final String contentType = Match(type).of(
-                    Case($(List(Resource.Type.VIDEO, Resource.Type.TRAILER)::contains), () -> "video/mp4"),
-                    Case($(), () -> "image/jpeg")
+            final String contentType = API.Match(type).of(
+                    API.Case(API.$(API.List(Resource.Type.VIDEO, Resource.Type.TRAILER)::contains), () -> "video/mp4"),
+                    API.Case(API.$(), () -> "image/jpeg")
             );
             final byte[] content = FAKER.lorem().characters().getBytes();
             return Resource.with(content, contentType, type.name().toLowerCase(), type);

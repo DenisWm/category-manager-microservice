@@ -1,6 +1,6 @@
 package com.course.admin.catalogo.application.castmember.create;
 
-import com.course.admin.catalogo.application.Fixture;
+import com.course.admin.catalogo.domain.Fixture;
 import com.course.admin.catalogo.application.UseCaseTest;
 import com.course.admin.catalogo.domain.castmember.CastMemberGateway;
 import com.course.admin.catalogo.domain.castmember.CastMemberType;

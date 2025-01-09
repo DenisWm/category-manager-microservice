@@ -1,15 +1,13 @@
 package com.course.admin.catalogo.application.castmember.delete;
 
-import com.course.admin.catalogo.Fixture;
 import com.course.admin.catalogo.IntegrationTest;
+import com.course.admin.catalogo.domain.Fixture;
 import com.course.admin.catalogo.domain.castmember.CastMember;
 import com.course.admin.catalogo.domain.castmember.CastMemberGateway;
 import com.course.admin.catalogo.domain.castmember.CastMemberID;
 import com.course.admin.catalogo.infrastructure.castmember.persistence.CastMemberJpaEntity;
 import com.course.admin.catalogo.infrastructure.castmember.persistence.CastMemberRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
@@ -32,8 +30,8 @@ public class DeleteCastMemberUseCaseTest  {
 
     @Test
     public void givenValidIdentifier_whenCallsDeleteMember_shouldDeleteIt() throws Exception {
-        final var castMemberOne = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
-        final var castMemberTwo = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var castMemberOne = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
+        final var castMemberTwo = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
         final var expectedId = castMemberOne.getId();
 
         this.castMemberRepository.saveAndFlush(CastMemberJpaEntity.from(castMemberOne));
@@ -53,7 +51,7 @@ public class DeleteCastMemberUseCaseTest  {
     @Test
     public void givenAnInvalidIdentifier_whenCallsDeleteMember_shouldBeOk() throws Exception {
         this.castMemberRepository.saveAndFlush(
-                CastMemberJpaEntity.from(CastMember.newMember(Fixture.name(), Fixture.CastMember.type())));
+                CastMemberJpaEntity.from(CastMember.newMember(Fixture.name(), Fixture.CastMembers.type())));
 
         final var expectedId = CastMemberID.from("123");
 
@@ -68,7 +66,7 @@ public class DeleteCastMemberUseCaseTest  {
 
     @Test
     public void givenValidIdentifier_whenCallsDeleteMemberAndGatewayThrowsException_shouldReceiveException() throws Exception {
-        final var castMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var castMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
         this.castMemberRepository.saveAndFlush(CastMemberJpaEntity.from(castMember));
 

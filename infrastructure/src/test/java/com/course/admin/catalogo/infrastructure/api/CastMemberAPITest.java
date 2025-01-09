@@ -1,7 +1,6 @@
 package com.course.admin.catalogo.infrastructure.api;
 
 import com.course.admin.catalogo.ControllerTest;
-import com.course.admin.catalogo.Fixture;
 import com.course.admin.catalogo.application.castmember.create.CreateCastMemberOutput;
 import com.course.admin.catalogo.application.castmember.create.DefaultCreateCastMemberUseCase;
 import com.course.admin.catalogo.application.castmember.delete.DefaultDeleteCastMemberUseCase;
@@ -11,6 +10,7 @@ import com.course.admin.catalogo.application.castmember.retrieve.list.CastMember
 import com.course.admin.catalogo.application.castmember.retrieve.list.DefaultListCastMemberUseCase;
 import com.course.admin.catalogo.application.castmember.update.DefaultUpdateCastMemberUseCase;
 import com.course.admin.catalogo.application.castmember.update.UpdateCastMemberOutput;
+import com.course.admin.catalogo.domain.Fixture;
 import com.course.admin.catalogo.domain.castmember.CastMember;
 import com.course.admin.catalogo.domain.castmember.CastMemberID;
 import com.course.admin.catalogo.domain.exceptions.NotFoundException;
@@ -66,7 +66,7 @@ public class CastMemberAPITest {
     @Test
     public void givenAValidCommand_whenCallsCreateCastMember_shouldReturnItsIdentifier() throws Exception {
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var expectedId = CastMemberID.from("1oi23uio1");
 
@@ -95,7 +95,7 @@ public class CastMemberAPITest {
     @Test
     public void givenAnInvalidName_whenCallsCreateCastMember_shouldReturnNotification() throws Exception {
         final String expectedName = null;
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
         final var expectedErrorMessage = "'name' should not be null";
 
         final var aCommand = new CreateCastMemberRequest(expectedName, expectedType);
@@ -124,7 +124,7 @@ public class CastMemberAPITest {
     @Test
     public void givenAValidId_whenCallsGetById_shouldReturnIt() throws Exception {
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var aMember = CastMember.newMember(expectedName, expectedType);
         final var expectedId = aMember.getId().getValue();
@@ -174,9 +174,9 @@ public class CastMemberAPITest {
     @Test
     public void givenAValidCommand_whenCallsUpdateCastMember_shouldReturnItsIdentifier() throws Exception {
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
-        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
         final var expectedId = aMember.getId();
 
@@ -205,10 +205,10 @@ public class CastMemberAPITest {
     @Test
     public void givenAnInvalidName_whenCallsUpdateCastMember_shouldReturnNotification() throws Exception {
         final String expectedName = null;
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
         final var expectedErrorMessage = "'name' should not be null";
 
-        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
         final var expectedId = aMember.getId();
 
@@ -238,7 +238,7 @@ public class CastMemberAPITest {
     @Test
     public void givenAnInvalidID_whenCallsUpdateCastMember_shouldReturnNotFound() throws Exception {
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
         final var expectedErrorMessage = "CastMember with ID 1oi23uio1 was not found";
 
         final var expectedId = CastMemberID.from("1oi23uio1");
@@ -282,7 +282,7 @@ public class CastMemberAPITest {
 
     @Test
     public void givenValidParams_whenCallsListCastMembers_shouldReturnIt() throws Exception {
-        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
         final var expectedPage = 1;
         final var expectedPerPage = 20;
@@ -331,7 +331,7 @@ public class CastMemberAPITest {
 
     @Test
     public void givenEmptyParam_whenCallsListCastMembers_shouldUseDefaultsAndReturnIt() throws Exception {
-        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
         final var expectedPage = 0;
         final var expectedPerPage = 10;

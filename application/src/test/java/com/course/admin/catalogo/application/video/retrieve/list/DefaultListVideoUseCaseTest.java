@@ -1,13 +1,10 @@
 package com.course.admin.catalogo.application.video.retrieve.list;
 
-import com.course.admin.catalogo.application.Fixture;
 import com.course.admin.catalogo.application.UseCaseTest;
-import com.course.admin.catalogo.application.genre.retrieve.list.GenreListOutput;
-import com.course.admin.catalogo.domain.genre.Genre;
+import com.course.admin.catalogo.domain.Fixture;
 import com.course.admin.catalogo.domain.pagination.Pagination;
-import com.course.admin.catalogo.domain.pagination.SearchQuery;
-import com.course.admin.catalogo.domain.video.Video;
 import com.course.admin.catalogo.domain.video.VideoGateway;
+import com.course.admin.catalogo.domain.video.VideoPreview;
 import com.course.admin.catalogo.domain.video.VideoSearchQuery;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -37,8 +34,8 @@ public class DefaultListVideoUseCaseTest extends UseCaseTest {
     @Test
     public void givenAValidQuery_whenCallsListVideos_shouldReturnVideos() throws Exception {
         final var videos = List.of(
-                Fixture.video(),
-                Fixture.video()
+                VideoPreview.from(Fixture.video()),
+                VideoPreview.from(Fixture.video())
         );
 
         final var expectedPage = 0;
@@ -59,7 +56,16 @@ public class DefaultListVideoUseCaseTest extends UseCaseTest {
         when(videoGateway.findAll(any())).thenReturn(expectedPagination);
 
         final var aQuery =
-                new VideoSearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
+                new VideoSearchQuery(
+                        expectedPage,
+                        expectedPerPage,
+                        expectedTerms,
+                        expectedSort,
+                        expectedDirection,
+                        null,
+                        null,
+                        null
+                );
 
         final var actualOutput = useCase.execute(aQuery);
 
@@ -73,7 +79,7 @@ public class DefaultListVideoUseCaseTest extends UseCaseTest {
 
     @Test
     public void givenAnValidQuery_whenCallsListVideosAndResultIsEmpty_shouldReturnGenres() {
-        final var videos = List.<Video>of(
+        final var videos = List.<VideoPreview>of(
         );
 
         final var expectedPage = 0;
@@ -94,8 +100,18 @@ public class DefaultListVideoUseCaseTest extends UseCaseTest {
         );
 
         when(videoGateway.findAll(any())).thenReturn(expectedPagination);
+
         final var aQuery =
-                new VideoSearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
+                new VideoSearchQuery(
+                        expectedPage,
+                        expectedPerPage,
+                        expectedTerms,
+                        expectedSort,
+                        expectedDirection,
+                        null,
+                        null,
+                        null
+                );
 
         final var actualOutput = useCase.execute(aQuery);
 
@@ -120,7 +136,16 @@ public class DefaultListVideoUseCaseTest extends UseCaseTest {
         doThrow(new IllegalStateException(expectedErrorMessage)).when(videoGateway).findAll(any());
 
         final var aQuery =
-                new VideoSearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
+                new VideoSearchQuery(
+                        expectedPage,
+                        expectedPerPage,
+                        expectedTerms,
+                        expectedSort,
+                        expectedDirection,
+                        null,
+                        null,
+                        null
+                );
 
         final var actualException = assertThrows(IllegalStateException.class, () -> useCase.execute(aQuery));
 

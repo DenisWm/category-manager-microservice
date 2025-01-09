@@ -1,8 +1,7 @@
 package com.course.admin.catalogo.application.video.update;
 
-import com.course.admin.catalogo.application.Fixture;
+import com.course.admin.catalogo.domain.Fixture;
 import com.course.admin.catalogo.application.UseCaseTest;
-import com.course.admin.catalogo.application.video.create.CreateVideoCommand;
 import com.course.admin.catalogo.domain.castmember.CastMemberGateway;
 import com.course.admin.catalogo.domain.castmember.CastMemberID;
 import com.course.admin.catalogo.domain.category.CategoryGateway;

@@ -1,6 +1,7 @@
 package com.course.admin.catalogo.domain.video;
 
 import com.course.admin.catalogo.domain.Identifier;
+import com.course.admin.catalogo.domain.utils.IDUtils;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -14,14 +15,11 @@ public class VideoID extends Identifier {
         this.value = value;
     }
     public static VideoID unique() {
-        return VideoID.from(UUID.randomUUID());
+        return VideoID.from(IDUtils.uuid());
     }
 
     public static VideoID from(final String anId) {
         return new VideoID(anId);
-    }
-    public static VideoID from (final UUID anId) {
-        return new VideoID(anId.toString().toLowerCase());
     }
 
     @Override

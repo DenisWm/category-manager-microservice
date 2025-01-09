@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.Instant;
 
-@Table(name = "category")
+@Table(name = "categories")
 @Entity(name = "Category")
 public class CategoryJpaEntity {
 

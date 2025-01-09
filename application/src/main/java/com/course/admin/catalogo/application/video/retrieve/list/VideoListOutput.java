@@ -1,15 +1,8 @@
 package com.course.admin.catalogo.application.video.retrieve.list;
 
-import com.course.admin.catalogo.domain.video.AudioVideoMedia;
-import com.course.admin.catalogo.domain.video.ImageMedia;
-import com.course.admin.catalogo.domain.video.Rating;
-import com.course.admin.catalogo.domain.video.Video;
+import com.course.admin.catalogo.domain.video.VideoPreview;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
-
-import static com.course.admin.catalogo.application.utils.IDUtils.asString;
 
 public record VideoListOutput(
         String id,
@@ -19,13 +12,13 @@ public record VideoListOutput(
         Instant updatedAt
 
 ) {
-    public static VideoListOutput from(final Video aVideo) {
+    public static VideoListOutput from(final VideoPreview aVideo) {
         return new VideoListOutput(
-                aVideo.getId().getValue(),
-                aVideo.getTitle(),
-                aVideo.getDescription(),
-                aVideo.getCreatedAt(),
-                aVideo.getUpdatedAt()
+                aVideo.id(),
+                aVideo.title(),
+                aVideo.description(),
+                aVideo.createdAt(),
+                aVideo.updatedAt()
         );
     }
 }

@@ -1,6 +1,6 @@
 package com.course.admin.catalogo.application.video.create;
 
-import com.course.admin.catalogo.application.Fixture;
+import com.course.admin.catalogo.domain.Fixture;
 import com.course.admin.catalogo.application.UseCaseTest;
 import com.course.admin.catalogo.domain.castmember.CastMemberGateway;
 import com.course.admin.catalogo.domain.castmember.CastMemberID;
@@ -10,6 +10,7 @@ import com.course.admin.catalogo.domain.exceptions.InternalErrorException;
 import com.course.admin.catalogo.domain.exceptions.NotificationException;
 import com.course.admin.catalogo.domain.genre.GenreGateway;
 import com.course.admin.catalogo.domain.genre.GenreID;
+import com.course.admin.catalogo.domain.utils.IDUtils;
 import com.course.admin.catalogo.domain.video.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -899,14 +900,14 @@ public class CreateVideoUseCaseTest extends UseCaseTest {
     private void mockAudioVideoMedia() {
         when(mediaResourceGateway.storeAudioVideo(any(), any())).thenAnswer(t -> {
             final var resource = t.getArgument(1, Resource.class);
-            return AudioVideoMedia.with(UUID.randomUUID().toString(), resource.name(), "/img", "", MediaStatus.PENDING);
+            return AudioVideoMedia.with(IDUtils.uuid(), resource.name(), "/img", "", MediaStatus.PENDING);
         });
     }
 
     private void mockImageMedia() {
         when(mediaResourceGateway.storeImage(any(), any())).thenAnswer(t -> {
             final var resource = t.getArgument(1, Resource.class);
-            return ImageMedia.with(UUID.randomUUID().toString(), resource.name(), "/img");
+            return ImageMedia.with(IDUtils.uuid(), resource.name(), "/img");
         });
     }
 }

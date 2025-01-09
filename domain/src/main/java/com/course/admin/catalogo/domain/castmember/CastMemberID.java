@@ -1,6 +1,7 @@
 package com.course.admin.catalogo.domain.castmember;
 
 import com.course.admin.catalogo.domain.Identifier;
+import com.course.admin.catalogo.domain.utils.IDUtils;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -14,14 +15,11 @@ public class CastMemberID extends Identifier {
         this.value = value;
     }
     public static CastMemberID unique() {
-        return CastMemberID.from(UUID.randomUUID());
+        return CastMemberID.from(IDUtils.uuid());
     }
 
     public static CastMemberID from(final String anId) {
         return new CastMemberID(anId);
-    }
-    public static CastMemberID from (final UUID anId) {
-        return new CastMemberID(anId.toString().toLowerCase());
     }
 
     @Override

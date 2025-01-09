@@ -1,6 +1,7 @@
 package com.course.admin.catalogo.domain.category;
 
 import com.course.admin.catalogo.domain.Identifier;
+import com.course.admin.catalogo.domain.utils.IDUtils;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -10,18 +11,14 @@ public class CategoryID extends Identifier {
     protected final String value;
 
     private CategoryID(final String value) {
-        Objects.requireNonNull(value);
-        this.value = value;
+        this.value = Objects.requireNonNull(value);
     }
     public static CategoryID unique() {
-        return CategoryID.from(UUID.randomUUID());
+        return CategoryID.from(IDUtils.uuid());
     }
 
     public static CategoryID from(final String anId) {
         return new CategoryID(anId);
-    }
-    public static CategoryID from (final UUID anId) {
-        return new CategoryID(anId.toString().toLowerCase());
     }
 
     @Override
