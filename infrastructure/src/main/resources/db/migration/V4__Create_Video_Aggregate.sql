@@ -25,12 +25,12 @@ CREATE TABLE videos (
     duration DECIMAL(5, 2) NOT NULL,
     created_at DATETIME(6) NOT NULL,
     updated_at DATETIME(6) NOT NULL,
-    videos_id CHAR(32) NOT NULL,
-    trailer_id CHAR(32) NOT NULL,
-    banner_id CHAR(32) NOT NULL,
-    thumbnail_id CHAR(32) NOT NULL,
-    thumbnail_half_id CHAR(32) NOT NULL,
-    CONSTRAINT fk_v_videos_id FOREIGN KEY (videos_id) REFERENCES videos_video_media(id) ON DELETE CASCADE,
+    video_id CHAR(32) NULL,
+    trailer_id CHAR(32)  NULL,
+    banner_id CHAR(32) NULL,
+    thumbnail_id CHAR(32) NULL,
+    thumbnail_half_id CHAR(32) NULL,
+    CONSTRAINT fk_v_videos_id FOREIGN KEY (video_id) REFERENCES videos_video_media(id) ON DELETE CASCADE,
     CONSTRAINT fk_v_trailer_id FOREIGN KEY (trailer_id) REFERENCES videos_video_media(id) ON DELETE CASCADE,
     CONSTRAINT fk_v_banner_id FOREIGN KEY (banner_id) REFERENCES videos_image_media(id) ON DELETE CASCADE,
     CONSTRAINT fk_v_thumbnail_id FOREIGN KEY (thumbnail_id) REFERENCES videos_image_media(id) ON DELETE CASCADE,
@@ -38,25 +38,25 @@ CREATE TABLE videos (
 );
 
 CREATE TABLE videos_categories (
-    videos_id CHAR(32) NOT NULL ,
+    video_id CHAR(32) NOT NULL ,
     category_id CHAR(32) NOT NULL,
-    CONSTRAINT idx_vcs_video_category UNIQUE (videos_id, category_id) ,
-    CONSTRAINT fk_vcs_video_id FOREIGN KEY (videos_id) REFERENCES videos(id),
+    CONSTRAINT idx_vcs_video_category UNIQUE (video_id, category_id) ,
+    CONSTRAINT fk_vcs_video_id FOREIGN KEY (video_id) REFERENCES videos(id),
     CONSTRAINT fk_vcs_category_id FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
 CREATE TABLE videos_genres (
-   videos_id CHAR(32) NOT NULL ,
+   video_id CHAR(32) NOT NULL ,
    genre_id CHAR(32) NOT NULL,
-   CONSTRAINT idx_vgs_video_genre UNIQUE (videos_id, genre_id) ,
-   CONSTRAINT fk_vgs_video_id FOREIGN KEY (videos_id) REFERENCES videos(id),
+   CONSTRAINT idx_vgs_video_genre UNIQUE (video_id, genre_id) ,
+   CONSTRAINT fk_vgs_video_id FOREIGN KEY (video_id) REFERENCES videos(id),
    CONSTRAINT fk_vgs_genre_id FOREIGN KEY (genre_id) REFERENCES genres(id)
 );
 
 CREATE TABLE videos_cast_members (
-   videos_id CHAR(32) NOT NULL,
+   video_id CHAR(32) NOT NULL,
    cast_member_id CHAR(32) NOT NULL,
-   CONSTRAINT idx_vcms_video_cast_member UNIQUE (videos_id, cast_member_id) ,
-   CONSTRAINT fk_vcms_video_id FOREIGN KEY (videos_id) REFERENCES videos(id),
+   CONSTRAINT idx_vcms_video_cast_member UNIQUE (video_id, cast_member_id) ,
+   CONSTRAINT fk_vcms_video_id FOREIGN KEY (video_id) REFERENCES videos(id),
    CONSTRAINT fk_vcms_cast_member_id FOREIGN KEY (cast_member_id) REFERENCES cast_members(id)
 );

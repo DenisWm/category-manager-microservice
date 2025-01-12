@@ -8,14 +8,15 @@ import com.course.admin.catalogo.infrastructure.video.persistence.VideoJpaEntity
 import com.course.admin.catalogo.infrastructure.video.persistence.VideoRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Component
 public class DefaultVideoGateway implements VideoGateway {
 
     private final VideoRepository repository;
@@ -63,7 +64,7 @@ public class DefaultVideoGateway implements VideoGateway {
         );
 
         final var actualPage = this.repository.findAll(
-                SqlUtils.like(aQuery.terms()),
+                SqlUtils.like(SqlUtils.upper(aQuery.terms())),
                 toString(aQuery.castMember()),
                 toString(aQuery.categories()),
                 toString(aQuery.genres()),
@@ -82,6 +83,6 @@ public class DefaultVideoGateway implements VideoGateway {
         if(ids == null || ids.isEmpty()) {
             return null;
         }
-        return ids.stream().map(Identifier::toString).collect(Collectors.toSet());
+        return ids.stream().map(Identifier::getValue).collect(Collectors.toSet());
     }
 }

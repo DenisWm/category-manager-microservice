@@ -97,23 +97,23 @@ public class DefaultUpdateVideoUseCase extends UpdateVideoUseCase {
 
         try {
             final var aVideoMedia = aCommand.getVideo()
-                    .map(it -> mediaResourceGateway.storeAudioVideo(anId, it))
+                    .map(it -> mediaResourceGateway.storeAudioVideo(anId, VideoResource.with(it, VideoMediaType.VIDEO)))
                     .orElse(null);
 
             final var aTrailerMedia = aCommand.getTrailer()
-                    .map(it -> mediaResourceGateway.storeAudioVideo(anId, it))
+                    .map(it -> mediaResourceGateway.storeAudioVideo(anId, VideoResource.with(it, VideoMediaType.TRAILER)))
                     .orElse(null);
 
             final var aBannerMedia = aCommand.getBanner()
-                    .map(it -> mediaResourceGateway.storeImage(anId, it))
+                    .map(it -> mediaResourceGateway.storeImage(anId, VideoResource.with(it, VideoMediaType.BANNER)))
                     .orElse(null);
 
             final var aThumbNailMedia = aCommand.getThumbNail()
-                    .map(it -> mediaResourceGateway.storeImage(anId, it))
+                    .map(it -> mediaResourceGateway.storeImage(anId, VideoResource.with(it, VideoMediaType.THUMBNAIL)))
                     .orElse(null);
 
             final var aThumbNailHalfMedia = aCommand.getThumbNailHalf()
-                    .map(it -> mediaResourceGateway.storeImage(anId, it))
+                    .map(it -> mediaResourceGateway.storeImage(anId, VideoResource.with(it, VideoMediaType.THUMBNAIL_HALF)))
                     .orElse(null);
 
 

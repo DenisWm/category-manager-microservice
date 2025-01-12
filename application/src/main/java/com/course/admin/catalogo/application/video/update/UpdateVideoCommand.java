@@ -1,6 +1,6 @@
 package com.course.admin.catalogo.application.video.update;
 
-import com.course.admin.catalogo.domain.video.Resource;
+import com.course.admin.catalogo.domain.resource.Resource;
 
 import java.util.Optional;
 import java.util.Set;

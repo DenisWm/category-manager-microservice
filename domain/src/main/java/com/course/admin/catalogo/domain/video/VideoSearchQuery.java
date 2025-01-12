@@ -2,6 +2,7 @@ package com.course.admin.catalogo.domain.video;
 
 import com.course.admin.catalogo.domain.castmember.CastMemberID;
 import com.course.admin.catalogo.domain.category.CategoryID;
+import com.course.admin.catalogo.domain.genre.GenreID;
 
 import java.util.Set;
 
@@ -13,6 +14,6 @@ public record VideoSearchQuery(
         String direction,
         Set<CastMemberID> castMember,
         Set<CategoryID> categories,
-        Set<CastMemberID> genres
+        Set<GenreID> genres
 ) {
 }

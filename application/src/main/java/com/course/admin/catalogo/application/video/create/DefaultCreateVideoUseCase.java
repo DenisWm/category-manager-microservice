@@ -13,10 +13,7 @@ import com.course.admin.catalogo.domain.genre.GenreID;
 import com.course.admin.catalogo.domain.validation.Error;
 import com.course.admin.catalogo.domain.validation.ValidationHandler;
 import com.course.admin.catalogo.domain.validation.handler.Notification;
-import com.course.admin.catalogo.domain.video.MediaResourceGateway;
-import com.course.admin.catalogo.domain.video.Rating;
-import com.course.admin.catalogo.domain.video.Video;
-import com.course.admin.catalogo.domain.video.VideoGateway;
+import com.course.admin.catalogo.domain.video.*;
 
 import java.time.Year;
 import java.util.ArrayList;
@@ -86,23 +83,23 @@ public class DefaultCreateVideoUseCase
 
         try {
             final var aVideoMedia = aCommand.getVideo()
-                    .map(it -> mediaResourceGateway.storeAudioVideo(anId, it))
+                    .map(it -> mediaResourceGateway.storeAudioVideo(anId, VideoResource.with(it, VideoMediaType.VIDEO)))
                     .orElse(null);
 
             final var aTrailerMedia = aCommand.getTrailer()
-                    .map(it -> mediaResourceGateway.storeAudioVideo(anId, it))
+                    .map(it -> mediaResourceGateway.storeAudioVideo(anId, VideoResource.with(it, VideoMediaType.TRAILER)))
                     .orElse(null);
 
             final var aBannerMedia = aCommand.getBanner()
-                    .map(it -> mediaResourceGateway.storeImage(anId, it))
+                    .map(it -> mediaResourceGateway.storeImage(anId, VideoResource.with(it, VideoMediaType.BANNER)))
                     .orElse(null);
 
             final var aThumbNailMedia = aCommand.getThumbNail()
-                    .map(it -> mediaResourceGateway.storeImage(anId, it))
+                    .map(it -> mediaResourceGateway.storeImage(anId, VideoResource.with(it, VideoMediaType.THUMBNAIL)))
                     .orElse(null);
 
             final var aThumbNailHalfMedia = aCommand.getThumbNailHalf()
-                    .map(it -> mediaResourceGateway.storeImage(anId, it))
+                    .map(it -> mediaResourceGateway.storeImage(anId, VideoResource.with(it, VideoMediaType.THUMBNAIL_HALF)))
                     .orElse(null);
 
 

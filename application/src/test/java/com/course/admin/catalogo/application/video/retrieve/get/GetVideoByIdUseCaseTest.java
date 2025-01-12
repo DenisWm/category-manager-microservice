@@ -6,6 +6,8 @@ import com.course.admin.catalogo.domain.castmember.CastMemberID;
 import com.course.admin.catalogo.domain.category.CategoryID;
 import com.course.admin.catalogo.domain.exceptions.NotFoundException;
 import com.course.admin.catalogo.domain.genre.GenreID;
+import com.course.admin.catalogo.domain.resource.Resource;
+import com.course.admin.catalogo.domain.utils.IDUtils;
 import com.course.admin.catalogo.domain.video.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -50,11 +52,11 @@ public class GetVideoByIdUseCaseTest extends UseCaseTest {
                 Fixture.CastMembers.wesley().getId()
         );
 
-        final var expectedVideo = audioVideo(Resource.Type.VIDEO);
-        final var expectedTrailer = audioVideo(Resource.Type.TRAILER);;
-        final var expectedBanner = image(Resource.Type.BANNER);
-        final var expectedThumbNail = image(Resource.Type.THUMBNAIL);
-        final var expectedThumbNailHalf = image(Resource.Type.THUMBNAIL_HALF);
+        final var expectedVideo = audioVideo(VideoMediaType.VIDEO);
+        final var expectedTrailer = audioVideo(VideoMediaType.TRAILER);;
+        final var expectedBanner = image(VideoMediaType.BANNER);
+        final var expectedThumbNail = image(VideoMediaType.THUMBNAIL);
+        final var expectedThumbNailHalf = image(VideoMediaType.THUMBNAIL_HALF);
 
         final var aVideo = Video.newVideo(
                 expectedTitle,
@@ -114,8 +116,8 @@ public class GetVideoByIdUseCaseTest extends UseCaseTest {
 
     }
 
-    private AudioVideoMedia audioVideo(final Resource.Type type) {
-        final var checksum = UUID.randomUUID().toString();
+    private AudioVideoMedia audioVideo(final VideoMediaType type) {
+        final var checksum = IDUtils.uuid();
         return AudioVideoMedia.with(
                 checksum,
                 type.name().toLowerCase(),
@@ -125,8 +127,8 @@ public class GetVideoByIdUseCaseTest extends UseCaseTest {
         );
     }
 
-    private ImageMedia image(final Resource.Type type) {
-        final var checksum = UUID.randomUUID().toString();
+    private ImageMedia image(final VideoMediaType type) {
+        final var checksum = IDUtils.uuid();
         return ImageMedia.with(
                 checksum,
                 type.name().toLowerCase(),

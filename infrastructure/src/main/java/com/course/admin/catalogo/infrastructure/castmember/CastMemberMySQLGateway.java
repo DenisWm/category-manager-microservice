@@ -3,6 +3,7 @@ package com.course.admin.catalogo.infrastructure.castmember;
 import com.course.admin.catalogo.domain.castmember.CastMember;
 import com.course.admin.catalogo.domain.castmember.CastMemberGateway;
 import com.course.admin.catalogo.domain.castmember.CastMemberID;
+import com.course.admin.catalogo.domain.category.CategoryID;
 import com.course.admin.catalogo.domain.pagination.Pagination;
 import com.course.admin.catalogo.domain.pagination.SearchQuery;
 import com.course.admin.catalogo.infrastructure.castmember.persistence.CastMemberJpaEntity;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 @Component
 public class CastMemberMySQLGateway implements CastMemberGateway {
@@ -78,8 +80,13 @@ public class CastMemberMySQLGateway implements CastMemberGateway {
     }
 
     @Override
-    public List<CastMemberID> existsByIds(Iterable<CastMemberID> ids) {
-        throw new UnsupportedOperationException();
+    public List<CastMemberID> existsByIds(Iterable<CastMemberID> castMemberIDS) {
+        final var ids = StreamSupport.stream(castMemberIDS.spliterator(), false)
+                .map(CastMemberID::getValue)
+                .toList();
+        return this.castMemberRepository.existsByIds(ids).stream()
+                .map(CastMemberID::from)
+                .toList();
     }
 
     private Specification<CastMemberJpaEntity> assembleSpecification(final String terms) {

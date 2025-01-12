@@ -39,7 +39,6 @@ public class VideoJpaEntity {
     private boolean published;
 
     @Column(name = "rating", nullable = false)
-    @Enumerated(EnumType.STRING)
     private Rating rating;
 
     @Column(name = "duration", precision = 2)
@@ -48,7 +47,7 @@ public class VideoJpaEntity {
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME(6)")
     private Instant createdAt;
 
-    @Column(name = "update_at", columnDefinition = "DATETIME(6)")
+    @Column(name = "updated_at", columnDefinition = "DATETIME(6)")
     private Instant updatedAt;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
@@ -184,10 +183,10 @@ public class VideoJpaEntity {
                 Optional.ofNullable(getThumbnailHalf())
                         .map(ImageMediaJpaEntity::toDomain)
                         .orElse(null),
-                Optional.ofNullable(getVideo())
-                        .map(AudioVideoMediaJpaEntity::toDomain)
-                        .orElse(null),
                 Optional.ofNullable(getTrailer())
+                    .map(AudioVideoMediaJpaEntity::toDomain)
+                    .orElse(null),
+                Optional.ofNullable(getVideo())
                         .map(AudioVideoMediaJpaEntity::toDomain)
                         .orElse(null),
                 getCategories()
@@ -377,5 +376,26 @@ public class VideoJpaEntity {
     public VideoJpaEntity setCastMembers(Set<VideoCastMemberJpaEntity> castMembers) {
         this.castMembers = castMembers;
         return this;
+    }
+
+    public Set<CategoryID> getCategoriesID() {
+        return getCategories()
+                .stream()
+                .map(it -> CategoryID.from(it.getId().getCategoryId()))
+                .collect(Collectors.toSet());
+    }
+
+    public Set<GenreID> getGenreID() {
+        return getGenres()
+                .stream()
+                .map(it -> GenreID.from(it.getId().getGenreId()))
+                .collect(Collectors.toSet());
+    }
+
+    public Set<CastMemberID> getCastMemberID() {
+        return getCastMembers()
+                .stream()
+                .map(it -> CastMemberID.from(it.getId().getCastMemberId()))
+                .collect(Collectors.toSet());
     }
 }

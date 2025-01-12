@@ -1,5 +1,6 @@
 package com.course.admin.catalogo.infrastructure.genre;
 
+import com.course.admin.catalogo.domain.category.CategoryID;
 import com.course.admin.catalogo.domain.genre.Genre;
 import com.course.admin.catalogo.domain.genre.GenreGateway;
 import com.course.admin.catalogo.domain.genre.GenreID;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 @Component
 public class GenreMySQLGateway implements GenreGateway {
@@ -74,8 +76,13 @@ public class GenreMySQLGateway implements GenreGateway {
     }
 
     @Override
-    public List<GenreID> existsByIds(Iterable<GenreID> ids) {
-        throw new UnsupportedOperationException();
+    public List<GenreID> existsByIds(final Iterable<GenreID> genreIds) {
+        final var ids = StreamSupport.stream(genreIds.spliterator(), false)
+                .map(GenreID::getValue)
+                .toList();
+        return this.genreRepository.existsByIds(ids).stream()
+                .map(GenreID::from)
+                .toList();
     }
 
     private Specification<GenreJpaEntity> assembleSpecification(final String terms) {
