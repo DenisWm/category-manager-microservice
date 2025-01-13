@@ -5,10 +5,8 @@ import com.course.admin.catalogo.domain.castmember.CastMemberType;
 import com.course.admin.catalogo.domain.category.Category;
 import com.course.admin.catalogo.domain.genre.Genre;
 import com.course.admin.catalogo.domain.utils.IDUtils;
-import com.course.admin.catalogo.domain.video.Rating;
+import com.course.admin.catalogo.domain.video.*;
 import com.course.admin.catalogo.domain.resource.Resource;
-import com.course.admin.catalogo.domain.video.Video;
-import com.course.admin.catalogo.domain.video.VideoMediaType;
 import com.github.javafaker.Faker;
 import io.vavr.API;
 
@@ -149,6 +147,24 @@ public final class Fixture {
             final var checksum = IDUtils.uuid();
             final byte[] content = FAKER.lorem().characters().getBytes();
             return Resource.with(checksum, content, contentType, type.name().toLowerCase());
+        }
+
+        public static AudioVideoMedia audioVideo(final VideoMediaType type) {
+            final var checksum = IDUtils.uuid();
+            return AudioVideoMedia.with(
+                    checksum,
+                    type.name().toLowerCase(),
+                    "/videos/" + checksum
+            );
+        }
+
+        public ImageMedia image(final VideoMediaType type) {
+            final var checksum = IDUtils.uuid();
+            return ImageMedia.with(
+                    checksum,
+                    type.name().toLowerCase(),
+                    "/images/" + checksum
+            );
         }
     }
 }

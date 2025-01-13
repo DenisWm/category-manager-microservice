@@ -6,6 +6,8 @@ import com.course.admin.catalogo.infrastructure.configuration.properties.storage
 import com.course.admin.catalogo.infrastructure.services.StorageService;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class DefaultMediaResourceGateway implements MediaResourceGateway {
 
@@ -40,6 +42,12 @@ public class DefaultMediaResourceGateway implements MediaResourceGateway {
     }
 
     @Override
+    public Optional<Resource> getResource(final VideoID anId, final VideoMediaType type) {
+        final var filepath = filepath(anId, type);
+        return this.storageService.get(filepath);
+    }
+
+    @Override
     public void clearResources(final VideoID anId) {
         final var ids = this.storageService.list(folder(anId));
         this.storageService.deleteAll(ids);
@@ -54,7 +62,11 @@ public class DefaultMediaResourceGateway implements MediaResourceGateway {
     }
 
     private String filepath(final VideoID anId, final VideoResource aResource) {
-        return folder(anId) + "/" + filename(aResource.type());
+        return filepath(anId, aResource.type());
+    }
+
+    private String filepath(final VideoID anId, final VideoMediaType type) {
+        return folder(anId) + "/" + filename(type);
     }
 
     private void store(final String filepath, final Resource aResource) {

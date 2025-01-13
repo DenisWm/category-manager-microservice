@@ -94,4 +94,12 @@ public class AudioVideoMedia extends ValueObject {
     public int hashCode() {
         return Objects.hash(checksum, rawLocation);
     }
+
+    public AudioVideoMedia processing() {
+        return AudioVideoMedia.with(id, checksum, name, rawLocation, encodedLocation, MediaStatus.PROCESSING);
+    }
+
+    public AudioVideoMedia completed(final String encodedLocation) {
+        return AudioVideoMedia.with(id, checksum, name, rawLocation, encodedLocation, MediaStatus.COMPLETED);
+    }
 }
