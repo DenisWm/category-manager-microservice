@@ -1,4 +1,8 @@
 spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+
   datasource:
     driver-class-name: org.h2.Driver
     username: root
@@ -8,3 +12,4 @@ spring:
     console:
       enabled: true
       path: /h2
+

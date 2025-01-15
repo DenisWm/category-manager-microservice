@@ -6,7 +6,6 @@ import com.course.admin.catalogo.domain.castmember.CastMemberID;
 import com.course.admin.catalogo.domain.category.CategoryID;
 import com.course.admin.catalogo.domain.exceptions.NotFoundException;
 import com.course.admin.catalogo.domain.genre.GenreID;
-import com.course.admin.catalogo.domain.resource.Resource;
 import com.course.admin.catalogo.domain.utils.IDUtils;
 import com.course.admin.catalogo.domain.video.*;
 import org.junit.jupiter.api.Test;
@@ -70,11 +69,11 @@ public class GetVideoByIdUseCaseTest extends UseCaseTest {
                 expectedGenres,
                 expectedMembers
         )
-                .setVideo(expectedVideo)
-                .setTrailer(expectedTrailer)
-                .setBanner(expectedBanner)
-                .setThumbNail(expectedThumbNail)
-                .setThumbNailHalf(expectedThumbNailHalf);
+                .updateVideoMedia(expectedVideo)
+                .updateTrailerMedia(expectedTrailer)
+                .updateBannerMedia(expectedBanner)
+                .updateThumbnailMedia(expectedThumbNail)
+                .updateThumbnailHalfMedia(expectedThumbNailHalf);
 
         final var anId = aVideo.getId();
 

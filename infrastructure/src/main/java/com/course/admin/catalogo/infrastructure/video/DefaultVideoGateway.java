@@ -3,6 +3,8 @@ package com.course.admin.catalogo.infrastructure.video;
 import com.course.admin.catalogo.domain.Identifier;
 import com.course.admin.catalogo.domain.pagination.Pagination;
 import com.course.admin.catalogo.domain.video.*;
+import com.course.admin.catalogo.infrastructure.configuration.annotations.VideoCreatedQueue;
+import com.course.admin.catalogo.infrastructure.services.EventService;
 import com.course.admin.catalogo.infrastructure.utils.SqlUtils;
 import com.course.admin.catalogo.infrastructure.video.persistence.VideoJpaEntity;
 import com.course.admin.catalogo.infrastructure.video.persistence.VideoRepository;
@@ -19,9 +21,15 @@ import java.util.stream.Collectors;
 @Component
 public class DefaultVideoGateway implements VideoGateway {
 
+    private final EventService eventService;
     private final VideoRepository repository;
 
-    public DefaultVideoGateway(final VideoRepository repository) {
+
+    public DefaultVideoGateway(
+            @VideoCreatedQueue final EventService eventService,
+            final VideoRepository repository
+    ) {
+        this.eventService = Objects.requireNonNull(eventService);
         this.repository = Objects.requireNonNull(repository);
     }
 
@@ -32,7 +40,11 @@ public class DefaultVideoGateway implements VideoGateway {
     }
 
     private Video save(final Video aVideo) {
-        return repository.save(VideoJpaEntity.from(aVideo)).toAggregate();
+        final var result = repository.save(VideoJpaEntity.from(aVideo)).toAggregate();
+
+        aVideo.publishDomainEvents(eventService::send);
+
+        return result;
     }
 
     @Override

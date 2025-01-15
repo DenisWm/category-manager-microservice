@@ -11,7 +11,6 @@ import com.course.admin.catalogo.domain.category.CategoryID;
 import com.course.admin.catalogo.domain.genre.Genre;
 import com.course.admin.catalogo.domain.genre.GenreGateway;
 import com.course.admin.catalogo.domain.genre.GenreID;
-import com.course.admin.catalogo.domain.resource.Resource;
 import com.course.admin.catalogo.domain.utils.IDUtils;
 import com.course.admin.catalogo.domain.video.*;
 import com.course.admin.catalogo.infrastructure.video.persistence.VideoRepository;
@@ -115,11 +114,11 @@ class DefaultVideoGatewayTest {
                 expectedGenres,
                 expectedMembers
         )
-                .setVideo(expectedVideo)
-                .setTrailer(expectedTrailer)
-                .setBanner(expectedBanner)
-                .setThumbNail(expectedThumbNail)
-                .setThumbNailHalf(expectedThumbNailHalf);
+                .updateVideoMedia(expectedVideo)
+                .updateTrailerMedia(expectedTrailer)
+                .updateBannerMedia(expectedBanner)
+                .updateThumbnailMedia(expectedThumbNail)
+                .updateThumbnailHalfMedia(expectedThumbNailHalf);
 
 
         final var actualVideo = videoGateway.create(
@@ -286,11 +285,11 @@ class DefaultVideoGatewayTest {
                         expectedGenres,
                         expectedMembers
                 )
-                .setVideo(expectedVideo)
-                .setTrailer(expectedTrailer)
-                .setBanner(expectedBanner)
-                .setThumbNail(expectedThumbNail)
-                .setThumbNailHalf(expectedThumbNailHalf);
+                .updateVideoMedia(expectedVideo)
+                .updateTrailerMedia(expectedTrailer)
+                .updateBannerMedia(expectedBanner)
+                .updateThumbnailMedia(expectedThumbNail)
+                .updateThumbnailHalfMedia(expectedThumbNailHalf);
 
 
         final var actualVideo = videoGateway.update(
@@ -430,11 +429,11 @@ class DefaultVideoGatewayTest {
                         expectedGenres,
                         expectedMembers
                 )
-                .setVideo(expectedVideo)
-                .setTrailer(expectedTrailer)
-                .setBanner(expectedBanner)
-                .setThumbNail(expectedThumbNail)
-                .setThumbNailHalf(expectedThumbNailHalf)
+                .updateVideoMedia(expectedVideo)
+                .updateTrailerMedia(expectedTrailer)
+                .updateBannerMedia(expectedBanner)
+                .updateThumbnailMedia(expectedThumbNail)
+                .updateThumbnailHalfMedia(expectedThumbNailHalf)
         );
 
         final var anId = aVideo.getId();

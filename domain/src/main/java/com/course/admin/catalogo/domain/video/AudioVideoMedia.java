@@ -102,4 +102,8 @@ public class AudioVideoMedia extends ValueObject {
     public AudioVideoMedia completed(final String encodedLocation) {
         return AudioVideoMedia.with(id, checksum, name, rawLocation, encodedLocation, MediaStatus.COMPLETED);
     }
+
+    public boolean isPendingEncode() {
+        return status == MediaStatus.PENDING;
+    }
 }

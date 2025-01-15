@@ -1,6 +1,5 @@
 package com.course.admin.catalogo.application.video.update;
 
-import com.course.admin.catalogo.application.video.create.CreateVideoOutput;
 import com.course.admin.catalogo.domain.Identifier;
 import com.course.admin.catalogo.domain.castmember.CastMemberGateway;
 import com.course.admin.catalogo.domain.castmember.CastMemberID;
@@ -119,11 +118,11 @@ public class DefaultUpdateVideoUseCase extends UpdateVideoUseCase {
 
             return videoGateway.update(
                     aVideo
-                            .setVideo(aVideoMedia)
-                            .setTrailer(aTrailerMedia)
-                            .setBanner(aBannerMedia)
-                            .setThumbNail(aThumbNailMedia)
-                            .setThumbNailHalf(aThumbNailHalfMedia)
+                            .updateVideoMedia(aVideoMedia)
+                            .updateTrailerMedia(aTrailerMedia)
+                            .updateBannerMedia(aBannerMedia)
+                            .updateThumbnailMedia(aThumbNailMedia)
+                            .updateThumbnailHalfMedia(aThumbNailHalfMedia)
             );
         } catch (Throwable t) {
             throw InternalErrorException.with("An error on updating video was observed [videoId:%s]".formatted(anId.getValue()), t);

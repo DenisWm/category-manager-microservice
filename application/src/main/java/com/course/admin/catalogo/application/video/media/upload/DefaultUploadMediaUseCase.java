@@ -28,11 +28,11 @@ public class DefaultUploadMediaUseCase extends UploadMediaUseCase {
                 .orElseThrow(notFound(anId, Video.class));
 
         switch (aResource.type()) {
-            case VIDEO -> aVideo.setVideo(this.mediaResourceGateway.storeAudioVideo(anId, aResource));
-            case TRAILER -> aVideo.setTrailer(this.mediaResourceGateway.storeAudioVideo(anId, aResource));
-            case BANNER -> aVideo.setBanner(this.mediaResourceGateway.storeImage(anId, aResource));
-            case THUMBNAIL -> aVideo.setThumbNail(this.mediaResourceGateway.storeImage(anId, aResource));
-            case THUMBNAIL_HALF -> aVideo.setThumbNailHalf(this.mediaResourceGateway.storeImage(anId, aResource));
+            case VIDEO -> aVideo.updateVideoMedia(this.mediaResourceGateway.storeAudioVideo(anId, aResource));
+            case TRAILER -> aVideo.updateTrailerMedia(this.mediaResourceGateway.storeAudioVideo(anId, aResource));
+            case BANNER -> aVideo.updateBannerMedia(this.mediaResourceGateway.storeImage(anId, aResource));
+            case THUMBNAIL -> aVideo.updateThumbnailMedia(this.mediaResourceGateway.storeImage(anId, aResource));
+            case THUMBNAIL_HALF -> aVideo.updateThumbnailHalfMedia(this.mediaResourceGateway.storeImage(anId, aResource));
         }
 
         return UploadMediaOutput.with(videoGateway.update(aVideo), aResource.type());

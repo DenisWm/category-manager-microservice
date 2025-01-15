@@ -5,7 +5,6 @@ import com.course.admin.catalogo.domain.castmember.CastMemberGateway;
 import com.course.admin.catalogo.domain.castmember.CastMemberID;
 import com.course.admin.catalogo.domain.category.CategoryGateway;
 import com.course.admin.catalogo.domain.category.CategoryID;
-import com.course.admin.catalogo.domain.exceptions.DomainException;
 import com.course.admin.catalogo.domain.exceptions.InternalErrorException;
 import com.course.admin.catalogo.domain.exceptions.NotificationException;
 import com.course.admin.catalogo.domain.genre.GenreGateway;
@@ -21,7 +20,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class DefaultCreateVideoUseCase
@@ -105,11 +103,11 @@ public class DefaultCreateVideoUseCase
 
             return videoGateway.create(
                     aVideo
-                            .setVideo(aVideoMedia)
-                            .setTrailer(aTrailerMedia)
-                            .setBanner(aBannerMedia)
-                            .setThumbNail(aThumbNailMedia)
-                            .setThumbNailHalf(aThumbNailHalfMedia)
+                            .updateVideoMedia(aVideoMedia)
+                            .updateTrailerMedia(aTrailerMedia)
+                            .updateBannerMedia(aBannerMedia)
+                            .updateThumbnailMedia(aThumbNailMedia)
+                            .updateThumbnailHalfMedia(aThumbNailHalfMedia)
             );
         } catch (Throwable t) {
             mediaResourceGateway.clearResources(anId);
