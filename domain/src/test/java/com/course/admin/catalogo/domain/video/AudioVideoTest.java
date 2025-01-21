@@ -1,11 +1,12 @@
 package com.course.admin.catalogo.domain.video;
 
+import com.course.admin.catalogo.domain.UnitTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class AudioVideoTest {
+public class AudioVideoTest extends UnitTest {
 
     @Test
     public void givenValidParams_whenCallsNewVideo_shouldReturnNewInstance() {

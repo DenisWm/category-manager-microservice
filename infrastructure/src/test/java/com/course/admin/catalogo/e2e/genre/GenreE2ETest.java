@@ -4,14 +4,11 @@ import com.course.admin.catalogo.E2ETest;
 import com.course.admin.catalogo.domain.category.CategoryID;
 import com.course.admin.catalogo.domain.genre.GenreID;
 import com.course.admin.catalogo.e2e.MockDsl;
-import com.course.admin.catalogo.infrastructure.category.models.UpdateCategoryRequest;
-import com.course.admin.catalogo.infrastructure.configuration.Json;
 import com.course.admin.catalogo.infrastructure.genre.models.UpdateGenreRequest;
 import com.course.admin.catalogo.infrastructure.genre.persistence.GenreRepository;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,8 +21,6 @@ import java.util.List;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -103,9 +98,9 @@ public class GenreE2ETest implements MockDsl {
 
         assertEquals(0, genreRepository.count());
 
-        givenAGenre("Aćão",  true, List.of());
-        givenAGenre("Esportes",  true, List.of());
-        givenAGenre("Drama",  true, List.of());
+        givenAGenre("Aćão", true, List.of());
+        givenAGenre("Esportes", true, List.of());
+        givenAGenre("Drama", true, List.of());
 
         listGenres(0, 1)
                 .andExpect(status().isOk())
@@ -139,15 +134,15 @@ public class GenreE2ETest implements MockDsl {
 
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void asACatalogAdminIShouldBeAbleToSearchBetweenAllGenres() throws Exception {
         Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
 
         assertEquals(0, genreRepository.count());
 
-        givenAGenre("Aćão",  true, List.of());
-        givenAGenre("Esportes",  true, List.of());
-        givenAGenre("Drama",  true, List.of());
+        givenAGenre("Aćão", true, List.of());
+        givenAGenre("Esportes", true, List.of());
+        givenAGenre("Drama", true, List.of());
 
         listGenres(0, 1, "dra")
                 .andExpect(status().isOk())
@@ -158,15 +153,15 @@ public class GenreE2ETest implements MockDsl {
                 .andExpect(jsonPath("$.items[0].name", equalTo("Drama")));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void asACatalogAdminIShouldBeAbleToSortAllGenresByNameDesc() throws Exception {
         Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
 
         assertEquals(0, genreRepository.count());
 
-        givenAGenre("Aćão",  true, List.of());
-        givenAGenre("Esportes",  true, List.of());
-        givenAGenre("Drama",  true, List.of());
+        givenAGenre("Aćão", true, List.of());
+        givenAGenre("Esportes", true, List.of());
+        givenAGenre("Drama", true, List.of());
 
         listGenres("", 0, 3, "name", "desc")
                 .andExpect(status().isOk())
@@ -181,7 +176,7 @@ public class GenreE2ETest implements MockDsl {
 
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void asACatalogAdminIShouldBeAbleToUpdateAGenreWithValidValuesByItsIdentifier() throws Exception {
         Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
 
@@ -210,7 +205,8 @@ public class GenreE2ETest implements MockDsl {
         assertNotNull(actualGenre.getUpdatedAt());
         assertNull(actualGenre.getDeletedAt());
     }
-    @org.junit.jupiter.api.Test
+
+    @Test
     public void asACatalogAdminIShouldBeAbleToInactivateAGenreByItsIdentifier() throws Exception {
         Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
 
@@ -240,7 +236,7 @@ public class GenreE2ETest implements MockDsl {
         assertNotNull(actualGenre.getDeletedAt());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void asACatalogAdminIShouldBeAbleToActivateAGenreByItsIdentifier() throws Exception {
         Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
 
@@ -270,14 +266,14 @@ public class GenreE2ETest implements MockDsl {
         assertNull(actualGenre.getDeletedAt());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void asACatalogAdminIShouldBeAbleToDeleteAGenreByItsIdentifier() throws Exception {
         Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
         final var filmes = givenACategory("Filmes", null, true);
 
         assertEquals(0, genreRepository.count());
 
-        final var actualId = givenAGenre("Aćão",  true, List.of(filmes));
+        final var actualId = givenAGenre("Aćão", true, List.of(filmes));
 
         assertEquals(1, genreRepository.count());
 
@@ -286,7 +282,7 @@ public class GenreE2ETest implements MockDsl {
         assertFalse(this.genreRepository.existsById(actualId.getValue()));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void asACatalogAdminIShouldNotSeAErrorByDeletingANotExistentGenre() throws Exception {
         Assertions.assertTrue(MYSQL_CONTAINER.isRunning());
 
