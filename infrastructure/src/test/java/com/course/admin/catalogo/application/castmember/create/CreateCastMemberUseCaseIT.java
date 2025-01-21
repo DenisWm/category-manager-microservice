@@ -1,8 +1,8 @@
 package com.course.admin.catalogo.application.castmember.create;
 
-import com.course.admin.catalogo.Fixture;
 import com.course.admin.catalogo.IntegrationTest;
 
+import com.course.admin.catalogo.domain.Fixture;
 import com.course.admin.catalogo.domain.castmember.CastMemberGateway;
 import com.course.admin.catalogo.domain.castmember.CastMemberType;
 import com.course.admin.catalogo.domain.exceptions.NotificationException;
@@ -35,7 +35,7 @@ public class CreateCastMemberUseCaseIT {
     @Test
     public void givenAValidCommand_whenCallingCreateCastMember_shouldReturnIt() {
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var aCommand = CreateCastMemberCommand.with(expectedName, expectedType);
 
@@ -58,7 +58,7 @@ public class CreateCastMemberUseCaseIT {
     @Test
     public void givenAnInvalidName_whenCallingCreateCastMember_shouldThrowsNotificationException() {
         final String expectedName = null;
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
         final var expectedErrorMessage = "'name' should not be null";
         final var expectedErrorCount = 1;
 

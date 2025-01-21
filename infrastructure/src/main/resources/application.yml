@@ -1,3 +1,16 @@
+amqp:
+  admin:
+    auto-create: false
+  queues:
+    video-created:
+      exchange: video.events
+      routing-key: video.created
+      queue: video.created.queue
+    video-encoded:
+      exchange: video.events
+      routing-key: video.encoded
+      queue: video.encoded.queue
+
 server:
   port: 8080
   servlet:
@@ -34,3 +47,37 @@ spring:
       "[hibernate.connection.provider_disables_autocommit]": true
       # Para aumentar a performance ao máximo, desabilitamos o auto-commit e o open-in-view.
       # https://vladmihalcea.com/why-you-should-always-use-hibernate-connection-provider_disables_autocommit-for-resource-local-jpa-transactions/
+  rabbitmq:
+    host: ${amqp.host}
+    port: ${amqp.port}
+    username: ${amqp.username}
+    password: ${amqp.password}
+    dynamic: ${amqp.admin.auto-create}
+  servlet:
+    multipart:
+      max-file-size: 10GB
+      max-request-size: 100GB
+
+google:
+  cloud:
+    credentials: ${GOOGLE_CLOUD_CREDENTIALS}
+    project-id: ${GOOGLE_CLOUD_PROJECT_ID}
+    storage:
+      catalogo-videos:
+        bucket: catalogo_flix_videos
+        connect-timeout: 1000
+        read-timeout: 2000
+        retry-delay: 50
+        retry-max-attempts: 2
+        retry-max-delay: 50
+        retry-multiplier: 1.0
+
+logging:
+  level:
+    root: INFO
+    com.course.admin.catalogo: DEBUG
+
+storage:
+  catalogo-videos:
+    location-pattern: videoId-{videoId}
+    file-name-pattern: type-{type}

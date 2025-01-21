@@ -1,13 +1,16 @@
 package com.course.admin.catalogo.infrastructure.castmember;
 
-import com.course.admin.catalogo.Fixture;
 import com.course.admin.catalogo.MySQLGatewayTest;
+import com.course.admin.catalogo.domain.Fixture;
 import com.course.admin.catalogo.domain.castmember.CastMember;
 import com.course.admin.catalogo.domain.castmember.CastMemberID;
 import com.course.admin.catalogo.domain.castmember.CastMemberType;
+import com.course.admin.catalogo.domain.category.Category;
+import com.course.admin.catalogo.domain.category.CategoryID;
 import com.course.admin.catalogo.domain.pagination.SearchQuery;
 import com.course.admin.catalogo.infrastructure.castmember.persistence.CastMemberJpaEntity;
 import com.course.admin.catalogo.infrastructure.castmember.persistence.CastMemberRepository;
+import com.course.admin.catalogo.infrastructure.category.persistence.CategoryJpaEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -15,8 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.course.admin.catalogo.Fixture.*;
-import static com.course.admin.catalogo.Fixture.CastMember.type;
+import static com.course.admin.catalogo.domain.Fixture.CastMembers.type;
+import static com.course.admin.catalogo.domain.Fixture.name;
 import static org.junit.jupiter.api.Assertions.*;
 
 @MySQLGatewayTest
@@ -274,6 +277,25 @@ public class CastMemberMySQLGatewayTest {
             assertEquals(expectedName, actualPage.items().get(index).getName());
             index++;
         }
+    }
+
+    @Test
+    public void givenTwoCastMembersAndOnePersisted_whenCallsExistsById_shouldReturnPersistedId() {
+        final var aCastMember = CastMember.newMember("Vin Diesel", CastMemberType.ACTOR);
+
+        final var expectedItems = 1;
+
+        final var expectedId = aCastMember.getId();
+
+        assertEquals(0, castMemberRepository.count());
+
+        castMemberRepository.saveAndFlush(CastMemberJpaEntity.from(aCastMember));
+
+        final var actualCategory = castMemberGateway
+                .existsByIds(List.of(CastMemberID.from("123"), expectedId));
+
+        assertEquals(expectedItems, actualCategory.size());
+        assertEquals(expectedId.getValue() , actualCategory.get(0).getValue());
     }
 
     private void mockMembers() {

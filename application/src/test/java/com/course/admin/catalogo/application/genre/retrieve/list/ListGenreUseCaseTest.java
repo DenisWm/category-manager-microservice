@@ -100,7 +100,7 @@ public class ListGenreUseCaseTest extends UseCaseTest {
     }
 
     @Test
-    public void givenAnValidQuery_whenCallsListGenreAbdGatewayThrowsRandom_shouldThrowsException() {
+    public void givenAnValidQuery_whenCallsListGenreAndGatewayThrowsRandom_shouldThrowsException() {
 
         final var expectedPage = 0;
         final var expectedPerPage = 10;

@@ -1,7 +1,6 @@
 package com.course.admin.catalogo.application.castmember.update;
 
-import com.course.admin.catalogo.application.Fixture;
-import com.course.admin.catalogo.application.UseCase;
+import com.course.admin.catalogo.domain.Fixture;
 import com.course.admin.catalogo.application.UseCaseTest;
 import com.course.admin.catalogo.domain.castmember.CastMember;
 import com.course.admin.catalogo.domain.castmember.CastMemberGateway;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.internal.matchers.Not;
 
 import java.util.List;
 import java.util.Objects;
@@ -120,7 +118,7 @@ public class UpdateCastMemberUseCaseTest extends UseCaseTest {
 
         final var expectedId = CastMemberID.from("123");
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
         final var expectedErrorMessage = "CastMember with ID 123 was not found";
 
         final var aCommand = UpdateCastMemberCommand.with(expectedId.getValue(), expectedName,expectedType);

@@ -1,6 +1,6 @@
 package com.course.admin.catalogo.application.castmember.retrieve.get;
 
-import com.course.admin.catalogo.application.Fixture;
+import com.course.admin.catalogo.domain.Fixture;
 import com.course.admin.catalogo.application.UseCaseTest;
 import com.course.admin.catalogo.domain.castmember.CastMember;
 import com.course.admin.catalogo.domain.castmember.CastMemberGateway;
@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import java.io.NotActiveException;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +35,7 @@ public class GetCastMemberByIdUseCaseTest extends UseCaseTest {
     @Test
     public void givenAValidId_whenCallsGetCastMemberById_thenExpectSuccess() {
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var aMember = CastMember.newMember(expectedName, expectedType);
 

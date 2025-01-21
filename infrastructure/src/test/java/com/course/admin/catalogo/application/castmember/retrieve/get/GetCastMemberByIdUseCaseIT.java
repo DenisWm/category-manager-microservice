@@ -1,7 +1,7 @@
 package com.course.admin.catalogo.application.castmember.retrieve.get;
 
-import com.course.admin.catalogo.Fixture;
 import com.course.admin.catalogo.IntegrationTest;
+import com.course.admin.catalogo.domain.Fixture;
 import com.course.admin.catalogo.domain.castmember.CastMember;
 import com.course.admin.catalogo.domain.castmember.CastMemberGateway;
 import com.course.admin.catalogo.domain.castmember.CastMemberID;
@@ -9,19 +9,13 @@ import com.course.admin.catalogo.domain.exceptions.NotFoundException;
 import com.course.admin.catalogo.infrastructure.castmember.persistence.CastMemberJpaEntity;
 import com.course.admin.catalogo.infrastructure.castmember.persistence.CastMemberRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-
-import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @IntegrationTest
 public class GetCastMemberByIdUseCaseIT {
@@ -38,7 +32,7 @@ public class GetCastMemberByIdUseCaseIT {
     @Test
     public void givenAValidId_whenCallsGetCastMemberById_thenExpectSuccess() {
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var aMember = CastMember.newMember(expectedName, expectedType);
 

@@ -1,6 +1,6 @@
 package com.course.admin.catalogo.application.castmember.retrieve.list;
 
-import com.course.admin.catalogo.application.Fixture;
+import com.course.admin.catalogo.domain.Fixture;
 import com.course.admin.catalogo.application.UseCaseTest;
 import com.course.admin.catalogo.domain.castmember.CastMember;
 import com.course.admin.catalogo.domain.castmember.CastMemberGateway;
@@ -34,8 +34,8 @@ public class ListCastMemberUseCaseTest extends UseCaseTest {
     @Test
     public void givenAValidQuery_whenListCastMembers_shouldReturnAll() {
         final var members = List.of(
-                CastMember.newMember(Fixture.name(), Fixture.CastMember.type()),
-                CastMember.newMember(Fixture.name(), Fixture.CastMember.type())
+                CastMember.newMember(Fixture.name(), Fixture.CastMembers.type()),
+                CastMember.newMember(Fixture.name(), Fixture.CastMembers.type())
         );
         final var expectedPage = 0;
         final var expectedPerPage = 10;

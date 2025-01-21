@@ -30,7 +30,6 @@ dependencies {
     implementation project(':application')
 
     implementation('mysql:mysql-connector-java')
-
     implementation('org.springdoc:springdoc-openapi-webmvc-core:1.6.8')
     implementation('org.springdoc:springdoc-openapi-ui:1.6.8')
 
@@ -39,12 +38,19 @@ dependencies {
     }
     implementation 'org.springframework.boot:spring-boot-starter-undertow'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
 
     implementation('com.fasterxml.jackson.module:jackson-module-afterburner')
 
     implementation 'io.vavr:vavr:0.10.4'
 
+    implementation 'com.google.cloud:google-cloud-storage:2.15.0'
+
+//    implementation 'com.google.guava:guava:32.1.1-jre'
+
+    testImplementation(project(path: ':domain', configuration: 'testClasses'))
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.amqp:spring-rabbit-test:2.4.4'
     testImplementation 'org.flywaydb:flyway-core'
 
     testImplementation("com.github.javafaker:javafaker:1.0.2")

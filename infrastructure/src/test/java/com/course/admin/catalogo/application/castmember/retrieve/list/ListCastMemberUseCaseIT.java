@@ -1,7 +1,7 @@
 package com.course.admin.catalogo.application.castmember.retrieve.list;
 
-import com.course.admin.catalogo.Fixture;
 import com.course.admin.catalogo.IntegrationTest;
+import com.course.admin.catalogo.domain.Fixture;
 import com.course.admin.catalogo.domain.castmember.CastMember;
 import com.course.admin.catalogo.domain.castmember.CastMemberGateway;
 import com.course.admin.catalogo.domain.pagination.Pagination;
@@ -34,8 +34,8 @@ public class ListCastMemberUseCaseIT {
     @Test
     public void givenAValidQuery_whenListCastMembers_shouldReturnAll() {
         final var members = List.of(
-                CastMember.newMember(Fixture.name(), Fixture.CastMember.type()),
-                CastMember.newMember(Fixture.name(), Fixture.CastMember.type())
+                CastMember.newMember(Fixture.name(), Fixture.CastMembers.type()),
+                CastMember.newMember(Fixture.name(), Fixture.CastMembers.type())
         );
 
         this.castMemberRepository.saveAllAndFlush(members.stream().map(CastMemberJpaEntity::from).toList());

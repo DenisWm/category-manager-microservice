@@ -2,10 +2,13 @@ package com.course.admin.catalogo.infrastructure.category;
 
 import com.course.admin.catalogo.domain.category.Category;
 import com.course.admin.catalogo.domain.category.CategoryID;
+import com.course.admin.catalogo.domain.genre.Genre;
+import com.course.admin.catalogo.domain.genre.GenreID;
 import com.course.admin.catalogo.domain.pagination.SearchQuery;
 import com.course.admin.catalogo.MySQLGatewayTest;
 import com.course.admin.catalogo.infrastructure.category.persistence.CategoryJpaEntity;
 import com.course.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
+import com.course.admin.catalogo.infrastructure.genre.persistence.GenreJpaEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -57,6 +60,8 @@ public class CategoryMySQLGatewayTest {
         Assertions.assertEquals(aCategory.getUpdatedAt(), actualEntity.getUpdatedAt());
         Assertions.assertNull(actualEntity.getDeletedAt());
     }
+
+
     @Test
     public void givenAValidCategory_whenCallsUpdate_shouldReturnACategoryUpdated() {
         final var expectedName = "Filmes";
