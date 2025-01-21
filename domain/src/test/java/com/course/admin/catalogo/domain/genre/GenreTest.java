@@ -1,5 +1,6 @@
 package com.course.admin.catalogo.domain.genre;
 
+import com.course.admin.catalogo.domain.UnitTest;
 import com.course.admin.catalogo.domain.category.CategoryID;
 import com.course.admin.catalogo.domain.exceptions.NotificationException;
 import com.course.admin.catalogo.domain.genre.Genre;
@@ -14,7 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GenreTest {
+public class GenreTest extends UnitTest {
 
     @Test
     public void givenAValidParams_whenCallNewGenre_thenInstantiateAGenre() {

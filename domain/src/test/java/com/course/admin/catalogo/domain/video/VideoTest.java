@@ -1,5 +1,6 @@
 package com.course.admin.catalogo.domain.video;
 
+import com.course.admin.catalogo.domain.UnitTest;
 import com.course.admin.catalogo.domain.castmember.CastMemberID;
 import com.course.admin.catalogo.domain.category.CategoryID;
 import com.course.admin.catalogo.domain.events.DomainEvent;
@@ -14,7 +15,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class VideoTest {
+public class VideoTest extends UnitTest {
 
     @Test
     public void givenValidParams_whenCallsNewVideo_shouldInstantiate() {

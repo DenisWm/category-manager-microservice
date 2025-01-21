@@ -1,5 +1,6 @@
 package com.course.admin.catalogo.domain.category;
 
+import com.course.admin.catalogo.domain.UnitTest;
 import com.course.admin.catalogo.domain.exceptions.DomainException;
 import com.course.admin.catalogo.domain.validation.handler.ThrowsValidationHandler;
 import org.junit.jupiter.api.Test;
@@ -7,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class CategoryTest {
+public class CategoryTest extends UnitTest {
     @Test
     public void givenAValidParams_whenCallNewCategory_thenInstantiateACategory() {
         final var expectedName = "Filmes";

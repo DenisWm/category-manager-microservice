@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class EntityTest {
+public class EntityTest extends UnitTest {
 
     @Test
     public void givenNullAsEvents_whenInstantiate_shouldBeOk() {
