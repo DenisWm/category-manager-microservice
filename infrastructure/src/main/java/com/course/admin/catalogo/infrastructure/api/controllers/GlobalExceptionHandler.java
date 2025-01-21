@@ -17,6 +17,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleDomainException(DomainException e) {
         return ResponseEntity.unprocessableEntity().body(ApiError.from(e));
     }
+
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handleNotFoundException(NotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiError.from(e));

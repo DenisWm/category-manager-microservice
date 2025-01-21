@@ -158,7 +158,7 @@ public final class Fixture {
             );
         }
 
-        public ImageMedia image(final VideoMediaType type) {
+        public static ImageMedia image(final VideoMediaType type) {
             final var checksum = IDUtils.uuid();
             return ImageMedia.with(
                     checksum,
