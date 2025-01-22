@@ -1,5 +1,6 @@
 package com.course.admin.catalogo.e2e.category;
 
+import com.course.admin.catalogo.ApiTest;
 import com.course.admin.catalogo.E2ETest;
 import com.course.admin.catalogo.e2e.MockDsl;
 import com.course.admin.catalogo.infrastructure.category.models.UpdateCategoryRequest;
@@ -74,7 +75,6 @@ public class CategoryE2ETest implements MockDsl {
 
         assertEquals(0, categoryRepository.count());
 
-
         final var actualId = givenACategory("Movies", null, true);
 
         final var expectedName = "Filmes";
@@ -114,6 +114,7 @@ public class CategoryE2ETest implements MockDsl {
         final var requestBody = new UpdateCategoryRequest(expectedName, expectedDescription, expectedIsActive);
 
         final var aMockMvcRequestBuilder = put("/categories/{id}", actualId.getValue())
+                .with(ApiTest.CATEGORIES_JWT)
                 .content(Json.writeValueAsString(requestBody))
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
@@ -194,6 +195,7 @@ public class CategoryE2ETest implements MockDsl {
         assertEquals(0, categoryRepository.count());
 
         final var aMockMvcRequestBuilder = get("/categories/123")
+                .with(ApiTest.CATEGORIES_JWT)
                 .contentType(org.springframework.http.MediaType.APPLICATION_JSON);
 
         this.mvc.perform(aMockMvcRequestBuilder)

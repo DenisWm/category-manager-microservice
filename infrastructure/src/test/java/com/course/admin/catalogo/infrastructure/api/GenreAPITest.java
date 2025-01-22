@@ -1,5 +1,6 @@
 package com.course.admin.catalogo.infrastructure.api;
 
+import com.course.admin.catalogo.ApiTest;
 import com.course.admin.catalogo.ControllerTest;
 import com.course.admin.catalogo.application.category.retrieve.get.CategoryOutput;
 import com.course.admin.catalogo.application.genre.create.CreateGenreOutput;
@@ -76,6 +77,7 @@ public class GenreAPITest {
         when(createGenreUseCase.execute(any())).thenReturn(CreateGenreOutput.from(expectedId));
 
         final var aRequest = post("/genres")
+                .with(ApiTest.GENRES_JWT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(aCommand));
 
@@ -108,6 +110,7 @@ public class GenreAPITest {
         when(createGenreUseCase.execute(any())).thenThrow(new NotificationException("Error", Notification.create(new Error(expectedErrorMessage))));
 
         final var aRequest = post("/genres")
+                .with(ApiTest.GENRES_JWT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(aCommand));
 
@@ -139,6 +142,7 @@ public class GenreAPITest {
         when(getGenreByIdUseCase.execute(any())).thenReturn(GenreOutput.from(aGenre));
 
         final var aRequest = get("/genres/{id}", expectedId)
+                .with(ApiTest.GENRES_JWT)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -164,6 +168,7 @@ public class GenreAPITest {
         when(getGenreByIdUseCase.execute(any())).thenThrow(NotFoundException.with(Genre.class, GenreID.from(expectedId)));
 
         final var aRequest = get("/genres/{id}", expectedId)
+                .with(ApiTest.GENRES_JWT)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -193,6 +198,7 @@ public class GenreAPITest {
 
         // when
         final var aRequest = put("/genres/{id}", expectedId)
+                .with(ApiTest.GENRES_JWT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(aCommand));
 
@@ -230,6 +236,7 @@ public class GenreAPITest {
 
         // when
         final var aRequest = put("/genres/{id}", expectedId)
+                .with(ApiTest.GENRES_JWT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(aCommand));
 
@@ -258,9 +265,12 @@ public class GenreAPITest {
                 .when(deleteGenreUseCase).execute(any());
 
         // when
-        final var aRequest = delete("/genres/{id}", expectedId);
+        final var aRequest = delete("/genres/{id}", expectedId)
+                .with(ApiTest.VIDEOS_JWT)
+                ;
 
-        final var result = this.mvc.perform(aRequest);
+        final var result = this.mvc.perform(aRequest)
+                ;
 
         // then
         result.andExpect(status().isNoContent());
@@ -289,6 +299,7 @@ public class GenreAPITest {
 
         // when
         final var aRequest = get("/genres")
+                .with(ApiTest.GENRES_JWT)
                 .queryParam("page", String.valueOf(expectedPage))
                 .queryParam("perPage", String.valueOf(expectedPerPage))
                 .queryParam("sort", expectedSort)

@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.flywaydb:flyway-mysql:9.11.0'
+    }
+}
+
+
 plugins {
     id 'java-conventions'
     id 'jacoco-report-aggregation'
@@ -28,6 +38,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-undertow'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 
     implementation('com.fasterxml.jackson.module:jackson-module-afterburner')
 
@@ -40,6 +52,8 @@ dependencies {
     testImplementation 'org.springframework.amqp:spring-rabbit-test:2.4.8'
     testImplementation 'org.flywaydb:flyway-core'
     testImplementation 'org.flywaydb:flyway-mysql'
+    testImplementation 'org.springframework.security:spring-security-test'
+
 
     testImplementation("com.github.javafaker:javafaker:1.0.2")
 
