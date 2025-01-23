@@ -1,6 +1,7 @@
 version: '3.7'
 
 services:
+
   mysql:
     container_name: adm_videos_mysql
     image: mysql:latest
@@ -12,10 +13,12 @@ services:
       - seccomp:unconfined
     ports:
       - 3306:3306
+    volumes:
+      - ../.docker/mysql:/var/lib/mysql:rw
     networks:
       - adm_videos_services
 
-  rabbitmq:
+  rabbit:
     container_name: adm_videos_rabbitmq
     image: rabbitmq:3-management
     environment:
@@ -26,25 +29,27 @@ services:
     ports:
       - 15672:15672
       - 5672:5672
-    volumes:
-      - ../.docker/mysql:/var/lib/mysql:rw
     networks:
       - adm_videos_services
 
   keycloak:
     container_name: adm_videos_keycloak
-    image:  quay.io/keycloak/keycloak:20.0.3
+    image: quay.io/keycloak/keycloak:20.0.3
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
     ports:
-      - 8443:8080
+      - 8443:8443
     command:
-      - start-dev --hostname-url=http://keycloak:8080
+      #      - start-dev # Utilizar esse comando quando a aplicação estiver executando fora do Docker
+      - start-dev --http-port=8443 --hostname-url=http://keycloak.internal:8443 # Utilizar esse comando quando a aplicação estiver dentro do Docker
     volumes:
       - ../.docker/keycloak:/opt/keycloak/data/h2:rw
     networks:
       - adm_videos_services
+    extra_hosts:
+      - "keycloak.internal:127.0.0.1"
+
 networks:
   adm_videos_services:
     external: true

@@ -14,8 +14,28 @@ services:
     networks:
       - adm_videos_network
       - adm_videos_services
+    depends_on:
+      - filebeat
+    labels:
+      filebeat_collector: true
+
+  filebeat:
+    container_name: adm_videos_filebeat
+    image: docker.elastic.co/beats/filebeat:7.17.9
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./filebeat/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ../.docker/filebeat:/usr/share/filebeat/data:rw
+    user: root
+    restart: on-failure
+    networks:
+      - adm_videos_network
+      - elastic
 
 networks:
   adm_videos_network:
   adm_videos_services:
+    external: true
+  elastic:
     external: true

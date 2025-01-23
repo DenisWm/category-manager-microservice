@@ -11,18 +11,33 @@ amqp:
       routing-key: video.encoded
       queue: video.encoded.queue
 
+google:
+  cloud:
+    credentials: ${GOOGLE_CLOUD_CREDENTIALS}
+    project-id: ${GOOGLE_CLOUD_PROJECT}
+    storage:
+      catalogo-videos:
+        bucket: fc3_videos
+        connect-timeout: 250
+        read-timeout: 5000
+        retry-delay: 50
+        retry-max-delay: 50
+        retry-max-attempts: 2
+        retry-multiplier: 1.0
+
 server:
   port: 8080
   servlet:
     context-path: /api
   compression:
-    enable: true
-    mime-types: text/html,text/xml,text/plain,text/css, text/javascript, application/javascript, application/json
-    min-response-size: 1024
+    enabled: true # Whether response compression is enabled.
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json # Comma-separated list of MIME types that should be compressed.
+    min-response-size: 1024 # Minimum "Content-Length" value that is required for compression to be performed.
   undertow:
     threads:
-      worker: 64
-      io: 4
+      worker: 64 # Generally this should be reasonably high, at least 10 per CPU core: https://undertow.io/undertow-docs/undertow-docs-2.1.0/index.html#listeners-2
+      io: 4 # One IO thread per CPU core is a reasonable default: https://undertow.io/undertow-docs/undertow-docs-2.1.0/index.html#listeners-2
+
 spring:
   datasource:
     url: jdbc:mysql://${mysql.url}/${mysql.schema}?useSSL=true&serverTimezone=UTC&characterEncoding=UTF-8
@@ -35,7 +50,6 @@ spring:
       maximum-pool-size: 20 # Mantemos até no máx 20 conexões com o banco de dados. O ideal é manter baixo mesmo, pois é algo custoso para o banco gerenciar. https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing
       minimum-idle: 10
       pool-name: master
-
   jpa:
     open-in-view: false
     show-sql: true
@@ -48,42 +62,23 @@ spring:
       # Para aumentar a performance ao máximo, desabilitamos o auto-commit e o open-in-view.
       # https://vladmihalcea.com/why-you-should-always-use-hibernate-connection-provider_disables_autocommit-for-resource-local-jpa-transactions/
   rabbitmq:
+    dynamic: ${amqp.admin.auto-create}
     host: ${amqp.host}
     port: ${amqp.port}
     username: ${amqp.username}
     password: ${amqp.password}
-    dynamic: ${amqp.admin.auto-create}
   servlet:
     multipart:
-      max-file-size: 10GB
-      max-request-size: 100GB
+      max-file-size: 10GB # Max file size.
+      max-request-size: 100GB # Max request size.
   security:
     oauth2:
       resourceserver:
         jwt:
           jwk-set-uri: ${keycloak.host}/realms/${keycloak.realm}/protocol/openid-connect/certs
-          issuer-uri:  ${keycloak.host}/realms/${keycloak.realm}
-
-google:
-  cloud:
-    credentials: ${GOOGLE_CLOUD_CREDENTIALS}
-    project-id: ${GOOGLE_CLOUD_PROJECT_ID}
-    storage:
-      catalogo-videos:
-        bucket: catalogo_flix_videos
-        connect-timeout: 1000
-        read-timeout: 2000
-        retry-delay: 50
-        retry-max-attempts: 2
-        retry-max-delay: 50
-        retry-multiplier: 1.0
-
-logging:
-  level:
-    root: INFO
-    com.course.admin.catalogo: DEBUG
+          issuer-uri: ${keycloak.host}/realms/${keycloak.realm}
 
 storage:
   catalogo-videos:
+    filename-pattern: type-{type}
     location-pattern: videoId-{videoId}
-    file-name-pattern: type-{type}
