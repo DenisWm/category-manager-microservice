@@ -1,5 +1,6 @@
 package com.course.admin.catalogo.e2e;
 
+import com.course.admin.catalogo.ApiTest;
 import com.course.admin.catalogo.domain.Identifier;
 import com.course.admin.catalogo.domain.castmember.CastMemberID;
 import com.course.admin.catalogo.domain.castmember.CastMemberType;
@@ -147,10 +148,12 @@ public interface MockDsl {
 
     private <T> T retrieve(String url, Class<T> clazz,  final Identifier anId) throws Exception {
 
-        final var aMockMvcRequestBuilder = get( url + anId.getValue())
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON);
+        final var aRequest = get( url + anId.getValue())
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .with(ApiTest.ADMIN_JWT)
+                ;
 
-        final var response = this.mvc().perform(aMockMvcRequestBuilder)
+        final var response = this.mvc().perform(aRequest)
                 .andDo(print());
 
         final var jsonContent = response.andExpect(status().isOk())
@@ -163,16 +166,19 @@ public interface MockDsl {
 
     private ResultActions retrieveResult(String url,  final Identifier anId) throws Exception {
 
-        final var aMockMvcRequestBuilder = get( url + anId.getValue())
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON);
+        final var aRequest = get( url + anId.getValue())
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .with(ApiTest.ADMIN_JWT)
+                ;
 
 
-        return  this.mvc().perform(aMockMvcRequestBuilder)
+        return  this.mvc().perform(aRequest)
                 .andDo(print());
     }
 
     private ResultActions update(final String url,  final Object aRequestBody, final Identifier id) throws Exception {
         final var aRequest = put(url + id.getValue())
+                .with(ApiTest.ADMIN_JWT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Json.writeValueAsString(aRequestBody));
 
@@ -181,7 +187,8 @@ public interface MockDsl {
     }
 
     private ResultActions delete(final String url,  final Identifier anId) throws Exception {
-        final var aRequest = MockMvcRequestBuilders.delete(url + anId.getValue()).contentType(MediaType.APPLICATION_JSON);
+        final var aRequest = MockMvcRequestBuilders.delete(url + anId.getValue()).contentType(MediaType.APPLICATION_JSON)
+                .with(ApiTest.ADMIN_JWT);
         return this.mvc().perform(aRequest);
     }
 
@@ -194,16 +201,18 @@ public interface MockDsl {
             final String direction
     ) throws Exception {
 
-        final var aMockMvcRequestBuilder = get(url)
+        final var aRequest = get(url)
                 .queryParam("search", search)
                 .queryParam("page", String.valueOf(page))
                 .queryParam("perPage", String.valueOf(perPage))
                 .queryParam("sort", sort)
                 .queryParam("dir", direction)
                 .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(ApiTest.ADMIN_JWT)
+                ;
 
-        final var response = this.mvc().perform(aMockMvcRequestBuilder)
+        final var response = this.mvc().perform(aRequest)
                 .andDo(print());
 
         return response;
@@ -212,7 +221,9 @@ public interface MockDsl {
     private String given(final String url, final Object body) throws Exception {
         final var aRequest = post(url)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(Json.writeValueAsString(body));
+                .content(Json.writeValueAsString(body))
+                .with(ApiTest.ADMIN_JWT)
+                ;
 
         final var response = this.mvc().perform(aRequest)
                 .andDo(print());
@@ -227,7 +238,9 @@ public interface MockDsl {
     private ResultActions givenResult(final String url, final Object body) throws Exception {
         final var aRequest = post(url)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(Json.writeValueAsString(body));
+                .content(Json.writeValueAsString(body))
+                .with(ApiTest.ADMIN_JWT)
+                ;
 
         return this.mvc().perform(aRequest).andDo(print());
     }

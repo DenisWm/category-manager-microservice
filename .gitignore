@@ -156,6 +156,8 @@ replay_pid*
 **/build/
 !src/**/build/
 .env
+.env.local
+sandbox/.docker
 
 # Ignore Gradle GUI config
 gradle-app.setting

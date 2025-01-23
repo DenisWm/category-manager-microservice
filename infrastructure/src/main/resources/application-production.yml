@@ -16,3 +16,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: none
+
+keycloak:
+  realm: ${KEYCLOAK_REALM:catalogo-manager}
+  host: ${KEYCLOAK_HOST:http://localhost:8443}
