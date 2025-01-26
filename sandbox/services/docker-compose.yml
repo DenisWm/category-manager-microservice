@@ -42,9 +42,10 @@ services:
       - 8443:8443
     command:
       #      - start-dev # Utilizar esse comando quando a aplicação estiver executando fora do Docker
-      - start-dev --http-port=8443 --hostname-url=http://keycloak.internal:8443 # Utilizar esse comando quando a aplicação estiver dentro do Docker
+      - start-dev --import-realm --http-port=8443 --hostname-url=http://keycloak.internal:8443 # Utilizar esse comando quando a aplicação estiver dentro do Docker
     volumes:
       - ../.docker/keycloak:/opt/keycloak/data/h2:rw
+      - ./keycloak/catalogo-manager.json:/opt/keycloak/data/import/catalogo-manager.json
     networks:
       - adm_videos_services
     extra_hosts:

@@ -1,0 +1,45 @@
+{
+  "realm": "catalogo-manager",
+  "enabled": true,
+  "roles": {
+    "realm": [
+      {
+        "name": "catalogo-admin",
+        "description": "Role que dá permissão de admin para os usuários"
+      }
+    ]
+  },
+  "groups": [
+    {
+      "name": "catalogo-admin",
+      "realmRoles": ["catalogo-admin"]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "admin-catalogo-de-videos",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "directAccessGrantsEnabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "change-this-secret",
+      "redirectUris": ["http://localhost/*"],
+      "webOrigins": ["*"]
+    }
+  ],
+  "users": [
+    {
+      "username": "myuser",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "123456",
+          "temporary": false
+        }
+      ],
+      "groups": ["catalogo-admin"]
+    }
+  ]
+}

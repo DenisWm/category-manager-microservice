@@ -18,5 +18,5 @@ spring:
       ddl-auto: none
 
 keycloak:
-  realm: ${KEYCLOAK_REALM:catalogo-manager}
+  realm: ${KEYCLOAK_REALM:admin-catalogo-de-videos}
   host: ${KEYCLOAK_HOST:http://localhost:8443}

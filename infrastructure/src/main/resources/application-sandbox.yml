@@ -19,5 +19,5 @@ amqp:
   password: ${AMQP_RABBIT_PASSWORD}
 
 keycloak:
-  realm: catalogo-manager
-  host: http://localhost:8443
+  realm: ${KEYCLOAK_REALM:catalogo-manager}
+  host: ${KEYCLOAK_HOST:http://localhost:8443}
